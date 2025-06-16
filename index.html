@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prompt Generator By Ramsky</title>
+    <title>Veo 3 Prompt Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -159,12 +159,30 @@
             cursor: not-allowed;
             opacity: 0.9;
         }
+
+        /* Keyframe animation for title */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Apply animation to the main title */
+        .animated-title {
+            animation: fadeInSlideUp 1.2s ease-out forwards; /* Longer duration, smoother ease */
+            opacity: 0; /* Start invisible */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="input-section">
-            <h1 class="text-4xl font-extrabold text-center mb-8 text-white">Veo 3 Prompt Generator</h1>
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-white animated-title">Veo 3 Prompt Generator</h1>
 
             <div class="form-group">
                 <label for="subject">1. Subjek (Subject):</label>
@@ -271,7 +289,7 @@
                     <option value="Descent">Descent (Turun)</option>
                     <option value="Skim">Skim (Meluncur di Permukaan)</option>
                     <option value="Arc Up">Arc Up (Busur Ke Atas)</option>
-                    <option value="Arc Down">Arc Down (Busur Ke Bawah)</option>
+                    <option value="Arc Down">Arc Down (Busur Ke Bawah)</ 빛>
                     <option value="Reverse Zoom">Reverse Zoom (Zoom Terbalik)</option>
                     <option value="Vertigo Effect">Vertigo Effect (Efek Vertigo/Dolly Zoom)</option>
                     <option value="Bullet Time">Bullet Time (Waktu Peluru)</option>
@@ -407,6 +425,7 @@
             document.getElementById('indonesianPromptOutput').value = 'Membangkitkan prompt...';
             document.getElementById('englishPromptOutput').value = 'Generating prompt...';
 
+            // Construct the prompt for the LLM
             let chatHistory = [];
             const promptText = `Create a detailed video prompt for Veo 3 based on the following inputs. Provide two versions: one highly detailed in Indonesian (editable style), and one highly detailed in English (final style). The 'Kalimat yang Diucapkan' (Spoken Dialogue) should be copied exactly as provided to the English version without translation.
 
@@ -443,7 +462,7 @@ Please structure your response as a JSON object with two keys: "indonesianPrompt
                 }
             };
 
-            const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+            const apiKey = ""; // Canvas will automatically provide the API key at runtime if left as an empty string.
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
             try {
@@ -454,25 +473,44 @@ Please structure your response as a JSON object with two keys: "indonesianPrompt
                 });
 
                 const result = await response.json();
+                console.log("Raw API response result:", result); // For debugging: view the raw response
 
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
                     result.candidates[0].content.parts.length > 0) {
-                    const json = result.candidates[0].content.parts[0].text;
-                    const parsedJson = JSON.parse(json);
+                    let jsonString = result.candidates[0].content.parts[0].text;
 
-                    document.getElementById('indonesianPromptOutput').value = parsedJson.indonesianPrompt;
-                    document.getElementById('englishPromptOutput').value = parsedJson.englishPrompt;
+                    // Clean the string if it's wrapped in markdown code block (common issue with LLMs)
+                    // This regex finds content between ```json and ```
+                    const jsonMatch = jsonString.match(/```json\n([\s\S]*?)\n```/);
+                    if (jsonMatch && jsonMatch[1]) {
+                        jsonString = jsonMatch[1].trim();
+                    } else {
+                        // Fallback: if not wrapped in ```json, try to clean potential leading/trailing whitespace
+                        jsonString = jsonString.trim();
+                    }
+
+                    // Attempt to parse the (potentially cleaned) JSON string
+                    const parsedJson = JSON.parse(jsonString);
+                    console.log("Parsed JSON:", parsedJson); // For debugging: view the parsed JSON
+
+                    // Check if the expected properties exist before assigning
+                    document.getElementById('indonesianPromptOutput').value = parsedJson.indonesianPrompt || "Konten tidak ditemukan.";
+                    document.getElementById('englishPromptOutput').value = parsedJson.englishPrompt || "Content not found.";
 
                 } else {
-                    console.error("Unexpected response structure:", result);
-                    document.getElementById('indonesianPromptOutput').value = "Error: Tidak dapat menghasilkan prompt. Struktur respons tidak terduga.";
-                    document.getElementById('englishPromptOutput').value = "Error: Could not generate prompt. Unexpected response structure.";
+                    console.error("Unexpected API response structure or empty content:", result);
+                    document.getElementById('indonesianPromptOutput').value = "Error: Tidak dapat menghasilkan prompt. Struktur respons API tidak terduga atau konten kosong.";
+                    document.getElementById('englishPromptOutput').value = "Error: Could not generate prompt. Unexpected API response structure or empty content.";
                 }
             } catch (error) {
-                console.error("Error calling Gemini API:", error);
-                document.getElementById('indonesianPromptOutput').value = `Error: Gagal memanggil API Gemini. ${error.message}`;
-                document.getElementById('englishPromptOutput').value = `Error: Failed to call Gemini API. ${error.message}`;
+                console.error("Error during prompt generation:", error);
+                document.getElementById('indonesianPromptOutput').value = `Error: Gagal memanggil API atau memproses respons. Detail: ${error.message}`;
+                document.getElementById('englishPromptOutput').value = `Error: Failed to call API or process response. Details: ${error.message}`;
+                if (error instanceof SyntaxError) {
+                    document.getElementById('indonesianPromptOutput').value += "\n(Kesalahan parsing JSON: Format respons mungkin tidak sesuai harapan.)";
+                    document.getElementById('englishPromptOutput').value += "\n(JSON parsing error: Response format might not be as expected.)";
+                }
             } finally {
                 loadingIndicator.style.display = 'none';
             }
