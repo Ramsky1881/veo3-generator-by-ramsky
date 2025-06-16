@@ -138,6 +138,8 @@
         /* Output column styling */
         .output-column {
             flex: 1;
+            display: flex; /* Use flexbox for internal layout */
+            flex-direction: column; /* Stack children vertically */
             position: relative; /* Needed for absolute positioning of copy button */
         }
 
@@ -152,10 +154,11 @@
 
         /* Output textarea styling */
         .output-section textarea {
-            height: 450px; /* Taller output areas */
+            flex-grow: 1; /* Allow textarea to take available space */
             border: 1px solid #4a5568;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
-            padding-top: 45px; /* Added padding to make space for the button */
+            /* Removed padding-top here as the button will be below */
+            margin-bottom: 15px; /* Space between textarea and button */
         }
         .output-section textarea[disabled] {
             background-color: #1a1f26; /* Even darker for disabled, clearly read-only */
@@ -182,26 +185,27 @@
             opacity: 0; /* Start invisible */
         }
 
-        /* Copy button specific styles */
+        /* Copy button specific styles (now positioned at the bottom) */
         .copy-button {
-            position: absolute;
-            top: 60px; /* Adjusted position to be inside the textarea, considering h2 height */
-            right: 20px; /* Adjust as needed for horizontal positioning */
-            padding: 8px 12px;
-            background-color: #4a5568; /* Dark grey to stand out from blue */
+            /* Position relative to its parent .output-column if it's outside textarea */
+            /* If it's a child of the textarea container, its positioning should be adjusted */
+            /* For this implementation, we keep it a direct child of .output-column,
+               making it flow after the textarea */
+            width: 100%; /* Make it full width like other buttons */
+            padding: 12px 15px;
+            background-color: #4a5568; /* Dark grey for contrast */
             color: #e2e8f0;
             border: none;
             border-radius: 8px;
-            font-size: 0.9em;
+            font-size: 1em;
             cursor: pointer;
             transition: background-color 0.2s ease, transform 0.2s ease;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            z-index: 10; /* Ensure button is above textarea */
-            width: auto; /* Override general button width */
+            text-align: center; /* Center the text within the button */
         }
         .copy-button:hover {
             background-color: #63b3ed; /* Blue on hover */
-            transform: translateY(-1px);
+            transform: translateY(-2px); /* Slight lift */
         }
         .copy-button:active {
             transform: translateY(0);
@@ -291,7 +295,7 @@
                     <option value="Jump Cut">Jump Cut (Potongan Lompat)</option>
                     <option value="Smash Cut">Smash Cut (Potongan Tumbukan)</option>
                     <option value="Slow Zoom">Slow Zoom (Zoom Lambat)</option>
-                    <option value="Fast Zoom">Fast Zoom (Zoom Cepat)</option>
+                    <option value="Fast Zoom">Fast Motion (Gerak Cepat)</option>
                     <option value="Tracking Shot">Tracking Shot (Bidikan Pelacakan)</option>
                     <option value="Fixed Shot">Fixed Shot (Bidikan Tetap)</option>
                     <option value="Static Shot">Static Shot (Bidikan Statis)</option>
@@ -412,9 +416,9 @@
             </div>
             <div class="output-column">
                 <h2 class="text-xl lg:text-2xl">English Prompt (Final)</h2>
-                <!-- Moved copy button inside the column and adjusted positioning -->
-                <button id="copyEnglishPrompt" class="copy-button">Copy</button>
                 <textarea id="englishPromptOutput" class="rounded-lg bg-gray-800 text-gray-400 p-3" disabled></textarea>
+                <!-- Moved copy button to be below the textarea -->
+                <button id="copyEnglishPrompt" class="copy-button">Copy</button>
             </div>
         </div>
     </div>
