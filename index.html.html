@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Generator By Ramsky</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles for body and font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Very dark background for depth */
+            color: #e2e8f0; /* Light text for readability */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top, allow scrolling */
+            min-height: 100vh; /* Full viewport height */
+            padding: 30px 20px; /* More padding */
+        }
+
+        /* Main container styling */
+        .container {
+            background-color: #161b22; /* Slightly lighter dark for main content area */
+            border-radius: 16px; /* More rounded corners */
+            padding: 40px; /* Increased padding */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); /* Stronger, deeper shadow */
+            width: 100%;
+            max-width: 1500px; /* Wider container */
+            display: grid;
+            grid-template-columns: 1fr; /* Single column on small screens */
+            gap: 40px; /* Increased gap */
+        }
+        @media (min-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr 1fr; /* Two columns on large screens */
+            }
+        }
+
+        /* Input and output section styling */
+        .input-section, .output-section {
+            background-color: #1f242c; /* Slightly different shade for internal sections */
+            padding: 30px; /* Consistent padding */
+            border-radius: 12px; /* Rounded corners for sections */
+            border: 1px solid #2d333b; /* Subtle border */
+        }
+
+        /* Form group spacing */
+        .form-group {
+            margin-bottom: 20px; /* More space between form elements */
+        }
+
+        /* Label styling */
+        label {
+            display: block;
+            margin-bottom: 10px; /* More space below label */
+            font-weight: 600; /* Bolder labels */
+            color: #a0aec0; /* Lighter grey for labels */
+            font-size: 0.95em; /* Slightly larger label font */
+        }
+
+        /* Input, textarea, select styling */
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 14px; /* More padding */
+            border-radius: 10px; /* More rounded */
+            border: 1px solid #384250; /* Darker, refined border */
+            background-color: #272e38; /* Input background */
+            color: #e2e8f0; /* Input text color */
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+        }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #63b3ed; /* Bright blue focus */
+            box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.4); /* Blue glow on focus */
+        }
+
+        /* Textarea specific height and resize */
+        textarea {
+            min-height: 90px; /* Slightly taller default */
+            resize: vertical;
+        }
+
+        /* Custom arrow for select dropdown */
+        select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a0aec0%22%20d%3D%22M287%2069.9a14.2%2014.2%200%200%200-20.1%200L146.2%20190.6%2025.5%2069.9a14.2%2014.2%200%200%200-20.1%2020.1L136.2%20220.3a14.2%2014.2%200%200%0020.1%200l110.8-110.3a14.2%2014.2%200%200%200%200-20.1z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 15px center; /* Centered arrow, more space */
+            background-size: 14px auto; /* Slightly larger arrow */
+        }
+
+        /* Button styling */
+        button {
+            width: 100%;
+            padding: 18px 25px; /* Larger padding for a more substantial button */
+            background-image: linear-gradient(to right, #63b3ed, #4299e1); /* Subtle gradient */
+            color: white;
+            border: none;
+            border-radius: 10px; /* Consistent rounded corners */
+            font-size: 1.2em; /* Larger font size */
+            cursor: pointer;
+            transition: all 0.3s ease; /* Smooth transitions for all properties */
+            font-weight: 700; /* Bolder font weight */
+            letter-spacing: 0.05em; /* Slight letter spacing */
+            box-shadow: 0 6px 15px rgba(99, 179, 237, 0.4); /* Stronger blue glow shadow */
+        }
+        button:hover {
+            background-image: linear-gradient(to right, #4299e1, #3182ce); /* Darker gradient on hover */
+            transform: translateY(-3px); /* More pronounced lift effect */
+            box-shadow: 0 8px 20px rgba(99, 179, 237, 0.6); /* Stronger shadow on hover */
+        }
+        button:active {
+            transform: translateY(0); /* Return to original position */
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* Slightly reduced shadow on click */
+        }
+
+        /* Loading indicator styling */
+        #loadingIndicator {
+            text-align: center;
+            margin-top: 25px; /* More margin */
+            font-size: 1.1em;
+            color: #a0aec0;
+            display: none;
+            opacity: 0.8;
+        }
+
+        /* Output section layout */
+        .output-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* More space between output columns */
+        }
+
+        /* Output column styling */
+        .output-column {
+            flex: 1;
+        }
+
+        /* Output heading styling */
+        .output-section h2 {
+            margin-bottom: 12px; /* More space below heading */
+            font-size: 1.5em; /* Larger heading font */
+            color: #e2e8f0;
+            font-weight: 700; /* Bolder heading */
+            text-align: center; /* Center align headings */
+        }
+
+        /* Output textarea styling */
+        .output-section textarea {
+            height: 450px; /* Taller output areas */
+            border: 1px solid #4a5568;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
+        }
+        .output-section textarea[disabled] {
+            background-color: #1a1f26; /* Even darker for disabled, clearly read-only */
+            color: #6a7c8f; /* Dimmed text for disabled */
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="input-section">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-white">Veo 3 Prompt Generator</h1>
+
+            <div class="form-group">
+                <label for="subject">1. Subjek (Subject):</label>
+                <input type="text" id="subject" placeholder="Contoh: Seorang astronot">
+            </div>
+
+            <div class="form-group">
+                <label for="action">2. Aksi (Action):</label>
+                <input type="text" id="action" placeholder="Contoh: Melayang di angkasa">
+            </div>
+
+            <div class="form-group">
+                <label for="expression">3. Ekspresi (Expression):</label>
+                <input type="text" id="expression" placeholder="Contoh: Gembira, penasaran">
+            </div>
+
+            <div class="form-group">
+                <label for="place">4. Tempat (Place):</label>
+                <input type="text" id="place" placeholder="Contoh: Di stasiun luar angkasa">
+            </div>
+
+            <div class="form-group">
+                <label for="time">5. Waktu (Time):</label>
+                <select id="time">
+                    <option value="">Pilih Waktu</option>
+                    <option value="Daytime">Siang Hari (Daytime)</option>
+                    <option value="Nighttime">Malam Hari (Nighttime)</option>
+                    <option value="Dawn">Fajar (Dawn)</option>
+                    <option value="Dusk">Senja (Dusk)</option>
+                    <option value="Future">Masa Depan (Future)</option>
+                    <option value="Past">Masa Lalu (Past)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cameraMovement">6. Gerakan Kamera (Camera Movement):</label>
+                <select id="cameraMovement">
+                    <option value="">Pilih Gerakan Kamera</option>
+                    <option value="Pan">Pan (Geser)</option>
+                    <option value="Tilt">Tilt (Miring)</option>
+                    <option value="Zoom In">Zoom In (Perbesar)</option>
+                    <option value="Zoom Out">Zoom Out (Perkecil)</option>
+                    <option value="Dolly">Dolly (Maju/Mundur)</option>
+                    <option value="Track">Track (Ikuti)</option>
+                    <option value="Crane/Boom">Crane/Boom (Atas/Bawah)</option>
+                    <option value="Pedestal">Pedestal (Naik/Turun)</option>
+                    <option value="Arc">Arc (Busur)</option>
+                    <option value="POV">POV (Point of View - Sudut Pandang Subjek)</option>
+                    <option value="Handheld">Handheld (Genggam)</option>
+                    <option value="Stabilized">Stabilized (Stabil)</option>
+                    <option value="Low Angle">Low Angle (Sudut Rendah)</option>
+                    <option value="High Angle">High Angle (Sudut Tinggi)</option>
+                    <option value="Dutch Angle">Dutch Angle (Sudut Belanda)</option>
+                    <option value="Whip Pan">Whip Pan (Geser Cepat)</option>
+                    <option value="Push In">Push In (Dorong Masuk)</option>
+                    <option value="Pull Out">Pull Out (Tarik Keluar)</option>
+                    <option value="Rack Focus">Rack Focus (Fokus Bergeser)</option>
+                    <option value="Spin/Roll">Spin/Roll (Putar/Gulir)</option>
+                    <option value="Aerial Shot">Aerial Shot (Bidikan Udara)</option>
+                    <option value="Worm's Eye View">Worm's Eye View (Sudut Pandang Cacing)</option>
+                    <option value="Bird's Eye View">Bird's Eye View (Sudut Pandang Burung)</option>
+                    <option value="Glide">Glide (Meluncur)</option>
+                    <option value="Zoom Burst">Zoom Burst (Ledakan Zoom)</option>
+                    <option value="Jib Shot">Jib Shot (Bidikan Jib)</option>
+                    <option value="Counter-Zoom">Counter-Zoom (Zoom Balik/Efek Vertigo)</option>
+                    <option value="Spiral Shot">Spiral Shot (Bidikan Spiral)</option>
+                    <option value="Orbit Shot">Orbit Shot (Bidikan Orbit)</option>
+                    <option value="Swish Pan">Swish Pan (Geser Cepat)</option>
+                    <option value="Follow Shot">Follow Shot (Bidikan Mengikuti)</option>
+                    <option value="Lead Shot">Lead Shot (Bidikan Memimpin)</option>
+                    <option value="Reveal Shot">Reveal Shot (Bidikan Mengungkap)</option>
+                    <option value="Insert Shot">Insert Shot (Bidikan Sisipan)</option>
+                    <option value="Establishing Shot">Establishing Shot (Bidikan Pembuka)</option>
+                    <option value="Over-the-Shoulder Shot">Over-the-Shoulder Shot (Bidikan di Atas Bahu)</option>
+                    <option value="Cross-Cutting">Cross-Cutting (Potongan Silang)</option>
+                    <option value="Match Cut">Match Cut (Potongan Cocok)</option>
+                    <option value="Jump Cut">Jump Cut (Potongan Lompat)</option>
+                    <option value="Smash Cut">Smash Cut (Potongan Tumbukan)</option>
+                    <option value="Slow Zoom">Slow Zoom (Zoom Lambat)</option>
+                    <option value="Fast Zoom">Fast Zoom (Zoom Cepat)</option>
+                    <option value="Tracking Shot">Tracking Shot (Bidikan Pelacakan)</option>
+                    <option value="Fixed Shot">Fixed Shot (Bidikan Tetap)</option>
+                    <option value="Static Shot">Static Shot (Bidikan Statis)</option>
+                    <option value="Handheld Sway">Handheld Sway (Goyangan Genggam)</option>
+                    <option value="Zoom Creep">Zoom Creep (Merayap Zoom)</option>
+                    <option value="Reframing">Reframing (Pembingkaian Ulang)</option>
+                    <option value="Pass-by Shot">Pass-by Shot (Bidikan Melewati)</option>
+                    <option value="Circle Steadicam">Circle Steadicam (Steadicam Lingkaran)</option>
+                    <option value="Strafing">Strafing (Bergerak Menyamping)</option>
+                    <option value="Trucking">Trucking (Bergerak)</option>
+                    <option value="Glidecam">Glidecam (Glidecam)</option>
+                    <option value="Gimbal Move">Gimbal Move (Gerakan Gimbal)</option>
+                    <option value="Drone Shot">Drone Shot (Bidikan Drone)</option>
+                    <option value="Underslung">Underslung (Menggantung)</option>
+                    <option value="Overhead">Overhead (Di Atas Kepala)</option>
+                    <option value="Whip Pan to Reveal">Whip Pan to Reveal (Geser Cepat untuk Mengungkap)</option>
+                    <option value="Swivel">Swivel (Putar)</option>
+                    <option value="Float">Float (Mengambang)</option>
+                    <option value="Swoop">Swoop (Menukik)</option>
+                    <option value="Weave">Weave (Menganyam)</option>
+                    <option value="Spiral Out">Spiral Out (Spiral Keluar)</option>
+                    <option value="Spiral In">Spiral In (Spiral Masuk)</option>
+                    <option value="Rise">Rise (Naik)</option>
+                    <option value="Descent">Descent (Turun)</option>
+                    <option value="Skim">Skim (Meluncur di Permukaan)</option>
+                    <option value="Arc Up">Arc Up (Busur Ke Atas)</option>
+                    <option value="Arc Down">Arc Down (Busur Ke Bawah)</option>
+                    <option value="Reverse Zoom">Reverse Zoom (Zoom Terbalik)</option>
+                    <option value="Vertigo Effect">Vertigo Effect (Efek Vertigo/Dolly Zoom)</option>
+                    <option value="Bullet Time">Bullet Time (Waktu Peluru)</option>
+                    <option value="Motion Control">Motion Control (Kontrol Gerak)</option>
+                    <option value="Stop Motion">Stop Motion (Gerak Henti)</option>
+                    <option value="Time-Lapse">Time-Lapse (Selang Waktu)</option>
+                    <option value="Hyper-Lapse">Hyper-Lapse (Hiper Selang Waktu)</option>
+                    <option value="Reverse">Reverse (Mundur)</option>
+                    <option value="Slow Motion">Slow Motion (Gerak Lambat)</option>
+                    <option value="Fast Motion">Fast Motion (Gerak Cepat)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="lighting">7. Pencahayaan (Lighting):</label>
+                <select id="lighting">
+                    <option value="">Pilih Pencahayaan</option>
+                    <option value="Natural Light">Cahaya Alami (Natural Light)</option>
+                    <option value="Dramatic Lighting">Cahaya Dramatis (Dramatic Lighting)</option>
+                    <option value="Soft Lighting">Cahaya Lembut (Soft Lighting)</option>
+                    <option value="Hard Lighting">Cahaya Keras (Hard Lighting)</option>
+                    <option value="Silhouette Lighting">Cahaya Siluet (Silhouette Lighting)</option>
+                    <option value="Low-Key Lighting">Cahaya Low-Key (Low-Key Lighting)</option>
+                    <option value="High-Key Lighting">Cahaya High-Key (High-Key Lighting)</option>
+                    <option value="Neon Lighting">Cahaya Neon (Neon Lighting)</option>
+                    <option value="Dim Lighting">Cahaya Remang (Dim Lighting)</option>
+                    <option value="Firelight">Cahaya Api (Firelight)</option>
+                    <option value="Moonlight">Cahaya Bulan (Moonlight)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="videoStyle">8. Gaya Video (Video Style):</label>
+                <select id="videoStyle">
+                    <option value="">Pilih Gaya Video</option>
+                    <option value="Realistic">Realistis (Realistic)</option>
+                    <option value="3D Animation">Animasi 3D (3D Animation)</option>
+                    <option value="2D Animation">Animasi 2D (2D Animation)</option>
+                    <option value="Cartoon Style">Gaya Kartun (Cartoon Style)</option>
+                    <option value="Cinematic Style">Gaya Sinematik (Cinematic Style)</option>
+                    <option value="Documentary Style">Gaya Dokumenter (Documentary Style)</option>
+                    <option value="Abstract Style">Gaya Abstrak (Abstract Style)</option>
+                    <option value="Minimalist Style">Gaya Minimalis (Minimalist Style)</option>
+                    <option value="Fantasy Style">Gaya Fantasi (Fantasy Style)</option>
+                    <option value="Sci-Fi Style">Gaya Sci-Fi (Sci-Fi Style)</option>
+                    <option value="Horror Style">Gaya Horor (Horror Style)</option>
+                    <option value="Comedy Style">Gaya Komedi (Comedy Style)</option>
+                    <option value="Romantic Style">Gaya Romantis (Romantic Style)</option>
+                    <option value="Thriller Style">Gaya Thriller (Thriller Style)</option>
+                    <option value="Action Style">Gaya Aksi (Action Style)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="videoComposition">9. Susunan Video (Video Composition):</label>
+                <select id="videoComposition">
+                    <option value="">Pilih Susunan Video</option>
+                    <option value="One Continuous Shot">Satu Bidikan Berkelanjutan (One Continuous Shot)</option>
+                    <option value="Multiple Shots">Beberapa Bidikan (Multiple Shots)</option>
+                    <option value="Montage">Montase (Montage)</option>
+                    <option value="Fast-Paced Sequence">Urutan Cepat (Fast-Paced Sequence)</option>
+                    <option value="Slow-Paced Sequence">Urutan Lambat (Slow-Paced Sequence)</option>
+                    <option value="Close-up Dominant">Close-up Dominan (Close-up Dominant)</option>
+                    <option value="Wide Shot Dominant">Bidikan Lebar Dominan (Wide Shot Dominant)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="soundMusic">10. Suara atau Musik (Sound or Music):</label>
+                <input type="text" id="soundMusic" placeholder="Contoh: Suara ombak yang menenangkan, musik orkestra yang epik">
+            </div>
+
+            <div class="form-group">
+                <label for="spokenDialogue">11. Kalimat yang Diucapkan (Spoken Dialogue):</label>
+                <input type="text" id="spokenDialogue" placeholder="Contoh: 'Ini adalah lompatan besar bagi umat manusia.'">
+            </div>
+
+            <div class="form-group">
+                <label for="additionalDetails">12. Detail Tambahan (Additional Details):</label>
+                <textarea id="additionalDetails" placeholder="Contoh: Warna dominan, detail objek, emosi yang ingin disampaikan lebih lanjut"></textarea>
+            </div>
+
+            <button onclick="generatePrompt()">Generate Prompt</button>
+            <div id="loadingIndicator" class="mt-4" style="display: none;">Generating prompt, please wait...</div>
+        </div>
+
+        <div class="output-section">
+            <div class="output-column">
+                <h2 class="text-xl lg:text-2xl">Prompt Bahasa Indonesia (Dapat Diedit)</h2>
+                <textarea id="indonesianPromptOutput" class="rounded-lg bg-gray-700 text-white p-3"></textarea>
+            </div>
+            <div class="output-column">
+                <h2 class="text-xl lg:text-2xl">English Prompt (Final)</h2>
+                <textarea id="englishPromptOutput" class="rounded-lg bg-gray-800 text-gray-400 p-3" disabled></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase configuration and initialization (boilerplate, not actively used for storage in this app)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+
+        // Function to map values for LLM prompt
+        const getTranslatedOption = (selectId) => {
+            const selectElement = document.getElementById(selectId);
+            if (selectElement && selectElement.value) {
+                // For select options, the value is already in English, which is what we need for the LLM input.
+                // We'll also get the display text which includes both languages for the user's reference.
+                const selectedOption = selectElement.options[selectElement.selectedIndex];
+                return selectedOption ? selectedOption.value : '';
+            }
+            return '';
+        };
+
+        async function generatePrompt() {
+            const subject = document.getElementById('subject').value;
+            const action = document.getElementById('action').value;
+            const expression = document.getElementById('expression').value;
+            const place = document.getElementById('place').value;
+            const time = getTranslatedOption('time');
+            const cameraMovement = getTranslatedOption('cameraMovement');
+            const lighting = getTranslatedOption('lighting');
+            const videoStyle = getTranslatedOption('videoStyle');
+            const videoComposition = getTranslatedOption('videoComposition');
+            const soundMusic = document.getElementById('soundMusic').value;
+            const spokenDialogue = document.getElementById('spokenDialogue').value;
+            const additionalDetails = document.getElementById('additionalDetails').value;
+
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            loadingIndicator.style.display = 'block';
+
+            document.getElementById('indonesianPromptOutput').value = 'Membangkitkan prompt...';
+            document.getElementById('englishPromptOutput').value = 'Generating prompt...';
+
+            let chatHistory = [];
+            const promptText = `Create a detailed video prompt for Veo 3 based on the following inputs. Provide two versions: one highly detailed in Indonesian (editable style), and one highly detailed in English (final style). The 'Kalimat yang Diucapkan' (Spoken Dialogue) should be copied exactly as provided to the English version without translation.
+
+Inputs:
+Subject: ${subject}
+Action: ${action}
+Expression: ${expression}
+Place: ${place}
+Time: ${time}
+Camera Movement: ${cameraMovement}
+Lighting: ${lighting}
+Video Style: ${videoStyle}
+Video Composition: ${videoComposition}
+Sound/Music: ${soundMusic}
+Spoken Dialogue: ${spokenDialogue}
+Additional Details: ${additionalDetails}
+
+Please structure your response as a JSON object with two keys: "indonesianPrompt" and "englishPrompt". Each value should be a string containing the developed prompt.`;
+
+            chatHistory.push({ role: "user", parts: [{ text: promptText }] });
+
+            const payload = {
+                contents: chatHistory,
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            "indonesianPrompt": { "type": "STRING" },
+                            "englishPrompt": { "type": "STRING" }
+                        },
+                        propertyOrdering: ["indonesianPrompt", "englishPrompt"]
+                    }
+                }
+            };
+
+            const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const json = result.candidates[0].content.parts[0].text;
+                    const parsedJson = JSON.parse(json);
+
+                    document.getElementById('indonesianPromptOutput').value = parsedJson.indonesianPrompt;
+                    document.getElementById('englishPromptOutput').value = parsedJson.englishPrompt;
+
+                } else {
+                    console.error("Unexpected response structure:", result);
+                    document.getElementById('indonesianPromptOutput').value = "Error: Tidak dapat menghasilkan prompt. Struktur respons tidak terduga.";
+                    document.getElementById('englishPromptOutput').value = "Error: Could not generate prompt. Unexpected response structure.";
+                }
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                document.getElementById('indonesianPromptOutput').value = `Error: Gagal memanggil API Gemini. ${error.message}`;
+                document.getElementById('englishPromptOutput').value = `Error: Failed to call Gemini API. ${error.message}`;
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
