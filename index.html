@@ -94,22 +94,24 @@
         /* Button styling */
         button {
             width: 100%;
-            padding: 18px 25px; /* Larger padding for a more substantial button */
+            padding: 20px 25px; /* Slightly larger padding for a more substantial button */
             background-image: linear-gradient(to right, #63b3ed, #4299e1); /* Subtle gradient */
             color: white;
             border: none;
             border-radius: 10px; /* Consistent rounded corners */
-            font-size: 1.2em; /* Larger font size */
+            font-size: 1.3em; /* Larger font size for the button */
             cursor: pointer;
-            transition: all 0.3s ease; /* Smooth transitions for all properties */
+            transition: all 0.4s ease; /* Longer transition for smoother animation */
             font-weight: 700; /* Bolder font weight */
-            letter-spacing: 0.05em; /* Slight letter spacing */
+            letter-spacing: 0.08em; /* More letter spacing */
             box-shadow: 0 6px 15px rgba(99, 179, 237, 0.4); /* Stronger blue glow shadow */
         }
         button:hover {
-            background-image: linear-gradient(to right, #4299e1, #3182ce); /* Darker gradient on hover */
-            transform: translateY(-3px); /* More pronounced lift effect */
-            box-shadow: 0 8px 20px rgba(99, 179, 237, 0.6); /* Stronger shadow on hover */
+            background-image: linear-gradient(to right, #4299e1, #3182ce, #63b3ed); /* More vibrant gradient on hover */
+            background-size: 200% 100%; /* Enable background movement */
+            background-position: right center; /* Start animation from right */
+            transform: translateY(-4px); /* More pronounced lift effect */
+            box-shadow: 0 10px 25px rgba(99, 179, 237, 0.7); /* Stronger shadow on hover */
         }
         button:active {
             transform: translateY(0); /* Return to original position */
@@ -136,6 +138,7 @@
         /* Output column styling */
         .output-column {
             flex: 1;
+            position: relative; /* Needed for absolute positioning of copy button */
         }
 
         /* Output heading styling */
@@ -176,6 +179,31 @@
         .animated-title {
             animation: fadeInSlideUp 1.2s ease-out forwards; /* Longer duration, smoother ease */
             opacity: 0; /* Start invisible */
+        }
+
+        /* Copy button specific styles */
+        .copy-button {
+            position: absolute;
+            top: 20px; /* Adjust as needed for vertical positioning */
+            right: 20px; /* Adjust as needed for horizontal positioning */
+            padding: 8px 12px;
+            background-color: #4a5568; /* Dark grey to stand out from blue */
+            color: #e2e8f0;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 10; /* Ensure button is above textarea */
+            width: auto; /* Override general button width */
+        }
+        .copy-button:hover {
+            background-color: #63b3ed; /* Blue on hover */
+            transform: translateY(-1px);
+        }
+        .copy-button:active {
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -383,6 +411,7 @@
             </div>
             <div class="output-column">
                 <h2 class="text-xl lg:text-2xl">English Prompt (Final)</h2>
+                <button id="copyEnglishPrompt" class="copy-button">Copy</button>
                 <textarea id="englishPromptOutput" class="rounded-lg bg-gray-800 text-gray-400 p-3" disabled></textarea>
             </div>
         </div>
@@ -530,6 +559,27 @@ Please structure your response as a JSON object with two keys: "indonesianPrompt
             }
         }
 
+        // Fungsi untuk menyalin teks ke clipboard
+        function copyTextToClipboard(text) {
+            // Menggunakan document.execCommand('copy') karena navigator.clipboard.writeText()
+            // mungkin tidak berfungsi di beberapa lingkungan iframe karena batasan keamanan.
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed'; // Menghindari scrolling
+            textarea.style.left = '-9999px'; // Sembunyikan dari tampilan
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                alert('Prompt Bahasa Inggris berhasil disalin!');
+            } catch (err) {
+                console.error('Gagal menyalin teks: ', err);
+                alert('Gagal menyalin prompt. Silakan salin secara manual.');
+            }
+            document.body.removeChild(textarea);
+        }
+
+
         // Lampirkan event listener setelah DOM dimuat sepenuhnya
         document.addEventListener('DOMContentLoaded', () => {
             const generateButton = document.getElementById('generateButton');
@@ -537,6 +587,16 @@ Please structure your response as a JSON object with two keys: "indonesianPrompt
                 generateButton.addEventListener('click', generatePrompt);
             } else {
                 console.error("Button with ID 'generateButton' not found.");
+            }
+
+            const copyEnglishPromptButton = document.getElementById('copyEnglishPrompt');
+            if (copyEnglishPromptButton) {
+                copyEnglishPromptButton.addEventListener('click', () => {
+                    const englishPromptText = document.getElementById('englishPromptOutput').value;
+                    copyTextToClipboard(englishPromptText);
+                });
+            } else {
+                console.error("Button with ID 'copyEnglishPrompt' not found.");
             }
         });
     </script>
