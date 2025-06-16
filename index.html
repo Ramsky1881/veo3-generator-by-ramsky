@@ -289,7 +289,7 @@
                     <option value="Descent">Descent (Turun)</option>
                     <option value="Skim">Skim (Meluncur di Permukaan)</option>
                     <option value="Arc Up">Arc Up (Busur Ke Atas)</option>
-                    <option value="Arc Down">Arc Down (Busur Ke Bawah)</ 빛>
+                    <option value="Arc Down">Arc Down (Busur Ke Bawah)</option>
                     <option value="Reverse Zoom">Reverse Zoom (Zoom Terbalik)</option>
                     <option value="Vertigo Effect">Vertigo Effect (Efek Vertigo/Dolly Zoom)</option>
                     <option value="Bullet Time">Bullet Time (Waktu Peluru)</option>
@@ -372,7 +372,7 @@
                 <textarea id="additionalDetails" placeholder="Contoh: Warna dominan, detail objek, emosi yang ingin disampaikan lebih lanjut"></textarea>
             </div>
 
-            <button onclick="generatePrompt()">Generate Prompt</button>
+            <button id="generateButton">Generate Prompt</button>
             <div id="loadingIndicator" class="mt-4" style="display: none;">Generating prompt, please wait...</div>
         </div>
 
@@ -462,7 +462,9 @@ Please structure your response as a JSON object with two keys: "indonesianPrompt
                 }
             };
 
-            const apiKey = ""; // Canvas will automatically provide the API key at runtime if left as an empty string.
+            // API Key Anda dimasukkan di sini
+            const apiKey = "AIzaSyAs1-LvKj0xqYJ9kuMNFzCy-bwm-cZZQ6I"; 
+            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
             try {
@@ -472,29 +474,38 @@ Please structure your response as a JSON object with two keys: "indonesianPrompt
                     body: JSON.stringify(payload)
                 });
 
+                // Periksa apakah respons jaringan berhasil (status 2xx)
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
+                    document.getElementById('indonesianPromptOutput').value = `Error: Gagal memanggil API. Status: ${response.status}. Detail: ${errorText}`;
+                    document.getElementById('englishPromptOutput').value = `Error: Failed to call API. Status: ${response.status}. Details: ${errorText}`;
+                    return; // Keluar dari fungsi jika ada error HTTP
+                }
+
                 const result = await response.json();
-                console.log("Raw API response result:", result); // For debugging: view the raw response
+                console.log("Raw API response result:", result); // Untuk debugging: lihat respons mentah
 
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
                     result.candidates[0].content.parts.length > 0) {
                     let jsonString = result.candidates[0].content.parts[0].text;
 
-                    // Clean the string if it's wrapped in markdown code block (common issue with LLMs)
-                    // This regex finds content between ```json and ```
+                    // Bersihkan string jika dibungkus dalam blok kode markdown (masalah umum dengan LLM)
+                    // Regex ini menemukan konten antara ```json dan ```
                     const jsonMatch = jsonString.match(/```json\n([\s\S]*?)\n```/);
                     if (jsonMatch && jsonMatch[1]) {
                         jsonString = jsonMatch[1].trim();
                     } else {
-                        // Fallback: if not wrapped in ```json, try to clean potential leading/trailing whitespace
+                        // Fallback: jika tidak dibungkus dalam ```json, coba bersihkan spasi awal/akhir
                         jsonString = jsonString.trim();
                     }
 
-                    // Attempt to parse the (potentially cleaned) JSON string
+                    // Coba parse string JSON (yang mungkin sudah dibersihkan)
                     const parsedJson = JSON.parse(jsonString);
-                    console.log("Parsed JSON:", parsedJson); // For debugging: view the parsed JSON
+                    console.log("Parsed JSON:", parsedJson); // Untuk debugging: lihat JSON yang sudah diparse
 
-                    // Check if the expected properties exist before assigning
+                    // Periksa apakah properti yang diharapkan ada sebelum menetapkan nilai
                     document.getElementById('indonesianPromptOutput').value = parsedJson.indonesianPrompt || "Konten tidak ditemukan.";
                     document.getElementById('englishPromptOutput').value = parsedJson.englishPrompt || "Content not found.";
 
@@ -510,11 +521,24 @@ Please structure your response as a JSON object with two keys: "indonesianPrompt
                 if (error instanceof SyntaxError) {
                     document.getElementById('indonesianPromptOutput').value += "\n(Kesalahan parsing JSON: Format respons mungkin tidak sesuai harapan.)";
                     document.getElementById('englishPromptOutput').value += "\n(JSON parsing error: Response format might not be as expected.)";
+                } else if (error instanceof TypeError && error.message.includes("Failed to fetch")) {
+                     document.getElementById('indonesianPromptOutput').value += "\n(Periksa koneksi internet atau masalah CORS. Pastikan API URL benar.)";
+                    document.getElementById('englishPromptOutput').value += "\n(Check internet connection or CORS issues. Ensure API URL is correct.)";
                 }
             } finally {
                 loadingIndicator.style.display = 'none';
             }
         }
+
+        // Lampirkan event listener setelah DOM dimuat sepenuhnya
+        document.addEventListener('DOMContentLoaded', () => {
+            const generateButton = document.getElementById('generateButton');
+            if (generateButton) {
+                generateButton.addEventListener('click', generatePrompt);
+            } else {
+                console.error("Button with ID 'generateButton' not found.");
+            }
+        });
     </script>
 </body>
 </html>
