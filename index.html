@@ -295,7 +295,7 @@
                     <option value="Jump Cut">Jump Cut (Potongan Lompat)</option>
                     <option value="Smash Cut">Smash Cut (Potongan Tumbukan)</option>
                     <option value="Slow Zoom">Slow Zoom (Zoom Lambat)</option>
-                    <option value="Fast Zoom">Fast Motion (Gerak Cepat)</option>
+                    <option value="Fast Motion">Fast Motion (Gerak Cepat)</option>
                     <option value="Tracking Shot">Tracking Shot (Bidikan Pelacakan)</option>
                     <option value="Fixed Shot">Fixed Shot (Bidikan Tetap)</option>
                     <option value="Static Shot">Static Shot (Bidikan Statis)</option>
@@ -462,23 +462,29 @@
 
             // Construct the prompt for the LLM
             let chatHistory = [];
-            const promptText = `Create a detailed video prompt for Veo 3 based on the following inputs. Provide two versions: one highly detailed in Indonesian (editable style), and one highly detailed in English (final style). The 'Kalimat yang Diucapkan' (Spoken Dialogue) should be copied exactly as provided to the English version without translation.
+            // Updated prompt instruction to explicitly ask for a single, coherent paragraph for each language.
+            const promptText = `Based on the following inputs, create a highly detailed, coherent, and well-structured video prompt for Veo 3.
+            The output should be a single, flowing paragraph for each language, seamlessly integrating all provided details into a natural narrative.
+            Provide two versions:
+            1. An Indonesian version (editable style).
+            2. An English version (final style). The 'Spoken Dialogue' should be copied exactly as provided to the English version without translation.
 
-Inputs:
-Subject: ${subject}
-Action: ${action}
-Expression: ${expression}
-Place: ${place}
-Time: ${time}
-Camera Movement: ${cameraMovement}
-Lighting: ${lighting}
-Video Style: ${videoStyle}
-Video Composition: ${videoComposition}
-Sound/Music: ${soundMusic}
-Spoken Dialogue: ${spokenDialogue}
-Additional Details: ${additionalDetails}
+            Inputs:
+            Subject: ${subject || 'N/A'}
+            Action: ${action || 'N/A'}
+            Expression: ${expression || 'N/A'}
+            Place: ${place || 'N/A'}
+            Time: ${time || 'N/A'}
+            Camera Movement: ${cameraMovement || 'N/A'}
+            Lighting: ${lighting || 'N/A'}
+            Video Style: ${videoStyle || 'N/A'}
+            Video Composition: ${videoComposition || 'N/A'}
+            Sound/Music: ${soundMusic || 'N/A'}
+            Spoken Dialogue: ${spokenDialogue || 'N/A'}
+            Additional Details: ${additionalDetails || 'N/A'}
 
-Please structure your response as a JSON object with two keys: "indonesianPrompt" and "englishPrompt". Each value should be a string containing the developed prompt.`;
+            Please structure your response as a JSON object with two keys: "indonesianPrompt" and "englishPrompt". Each value should be a string containing the developed, single-paragraph prompt. Ensure no markdown formatting like bullet points or separate lines for each input in the final prompt text.`;
+
 
             chatHistory.push({ role: "user", parts: [{ text: promptText }] });
 
@@ -532,7 +538,7 @@ Please structure your response as a JSON object with two keys: "indonesianPrompt
                     if (jsonMatch && jsonMatch[1]) {
                         jsonString = jsonMatch[1].trim();
                     } else {
-                        // Fallback: jika tidak dibungkus dalam ```json, coba bersihkan spasi awal/akhir
+                        // Fallback: if not wrapped in ```json, try to clean potential leading/trailing whitespace
                         jsonString = jsonString.trim();
                     }
 
