@@ -70,19 +70,19 @@
 </head>
 <body class="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 p-6 font-sans flex flex-col items-center justify-center">
 
-    <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-6xl flex flex-col items-center animate-fade-in">
-        <!-- Header Section (Always centered and stretched full width of the container) -->
-        <div class="w-full text-center mb-8">
-            <h1 class="text-5xl font-extrabold text-indigo-800 mb-4 leading-tight tracking-wider">
-                Veo 3 Prompt Generator
-            </h1>
-            <p class="text-gray-600 text-lg">
-                by ramsky.
-            </p>
-        </div>
+    <!-- Header Section (Always centered and stretched full width of the container) -->
+    <div class="w-full text-center mb-8 max-w-6xl">
+        <h1 class="text-5xl font-extrabold text-indigo-800 mb-4 leading-tight tracking-wider">
+            Veo 3 Prompt Generator
+        </h1>
+        <p class="text-gray-600 text-lg">
+            Buat prompt video yang detail dan sinematik by ramsky.
+        </p>
+    </div>
 
+    <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-6xl md:flex md:space-x-10 animate-fade-in">
         <!-- Input Form Section -->
-        <div class="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mb-10"> <!-- Adjusted width for better vertical flow -->
+        <div class="md:w-1/2 md:pr-4 mb-8 md:mb-0">
             <!-- Form Fields -->
             <div class="space-y-6">
                 <!-- 1. Deskripsi Video Utama -->
@@ -135,7 +135,7 @@
                                         <option value="">Pilih Gender</option>
                                         <option value="Pria">Pria</option>
                                         <option value="Wanita">Wanita</option>
-                                        <option value="Non-biner">Non-biner</option>
+                                        <option value="Non-biner">Hewan</option>
                                         <option value="Tidak Spesifik">Tidak Spesifik</option>
                                     </select>
                                 </div>
@@ -504,19 +504,23 @@
             </div>
 
             <!-- Generate Button -->
-            <button id="generate-prompt-btn"
-                class="mt-10 w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:from-purple-700 hover:to-indigo-800 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center text-xl tracking-wide disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-            >
-                <span id="generate-button-text">Buat Prompt Video Ajaib!</span>
-                <svg id="generate-spinner" class="animate-spin -ml-1 mr-3 h-6 w-6 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <!-- Loading indicator above the button -->
+            <div id="generate-loading-indicator" class="flex justify-center items-center h-12 mt-10 hidden">
+                <svg class="animate-spin h-8 w-8 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
+                <p class="ml-3 text-indigo-700 font-semibold">Membangun Prompt Ajaib...</p>
+            </div>
+            <button id="generate-prompt-btn"
+                class="mt-4 w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:from-purple-700 hover:to-indigo-800 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center text-xl tracking-wide disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            >
+                <span id="generate-button-text">Buat Prompt Video Ajaib!</span>
             </button>
         </div>
 
         <!-- Output Section -->
-        <div class="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 mt-10"> <!-- Adjusted width and added top margin for separation -->
+        <div class="md:w-1/2 md:pl-4">
             <h2 class="text-4xl font-bold text-indigo-700 mb-6 text-center leading-tight tracking-wider">Hasil Prompt</h2>
 
             <!-- Indonesian Prompt -->
@@ -557,6 +561,31 @@
                     Salin Prompt Bahasa Inggris
                 </button>
             </div>
+
+            <!-- Prompt Suggestions / Creative Ideas Section -->
+            <div class="bg-purple-50 p-6 rounded-xl shadow-md border border-purple-200 mt-8 animate-fade-in-up delay-200">
+                <h2 class="text-xl font-semibold text-purple-800 mb-4">Saran Prompt & Ide Kreatif</h2>
+                <textarea
+                    id="suggestionPrompt"
+                    class="w-full p-3 border border-purple-300 rounded-lg bg-white shadow-inner resize-y text-gray-800 text-base"
+                    rows="6"
+                    placeholder="Saran prompt atau ide kreatif akan muncul di sini setelah dihasilkan..."
+                    readonly
+                ></textarea>
+                <div id="suggestion-loading-indicator" class="flex justify-center items-center h-8 mt-4 hidden">
+                    <svg class="animate-spin h-6 w-6 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="ml-2 text-purple-700 text-sm">Mencari Ide...</p>
+                </div>
+                <button id="generate-suggestion-btn"
+                    class="mt-4 w-full bg-purple-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-purple-700 transition duration-200 ease-in-out flex items-center justify-center text-sm transform hover:-translate-y-0.5"
+                >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4.228 4.228l-.707.707M3 12H2m6.364 6.364l-.707-.707M12 21v-1M18.772 4.228l.707.707M12 10.5v.01m0-4.5v.01"></path></svg>
+                    Dapatkan Saran Prompt
+                </button>
+            </div>
         </div>
     </div>
 
@@ -582,9 +611,9 @@
             >
                 &times;
             </button>
-            <h3 class="text-3xl font-bold text-indigo-700 mb-5">Chat Ramsky</h3>
+            <h3 class="text-3xl font-bold text-indigo-700 mb-5">Chat Gemini</h3>
             <p class="text-gray-700 mb-6 text-lg leading-relaxed">
-                Fitur obrolan dengan Ramsky akan segera hadir di sini!
+                Fitur obrolan dengan Ramsky (Gemini) akan segera hadir di sini!
                 Ini akan memungkinkan Anda mendapatkan bantuan lebih lanjut atau ide-ide kreatif untuk prompt video Anda. Pantau terus!
             </p>
             <button id="confirm-close-chat-modal-btn"
@@ -626,11 +655,18 @@
         const generatePromptBtn = document.getElementById('generate-prompt-btn');
         const generateButtonText = document.getElementById('generate-button-text');
         const generateSpinner = document.getElementById('generate-spinner');
+        const generateLoadingIndicator = document.getElementById('generate-loading-indicator');
+
 
         const indonesianPromptTextarea = document.getElementById('indonesianPrompt');
         const englishPromptTextarea = document.getElementById('englishPrompt');
         const copyIdPromptBtn = document.getElementById('copy-id-prompt-btn');
         const copyEnPromptBtn = document.getElementById('copy-en-prompt-btn');
+
+        const suggestionPromptTextarea = document.getElementById('suggestionPrompt');
+        const generateSuggestionBtn = document.getElementById('generate-suggestion-btn');
+        const suggestionLoadingIndicator = document.getElementById('suggestion-loading-indicator');
+
 
         const chatGeminiBtn = document.getElementById('chat-gemini-btn');
         const chatButtonTextSpan = document.getElementById('chat-button-text');
@@ -993,9 +1029,10 @@
             // Show loading state
             generatePromptBtn.disabled = true;
             generateButtonText.classList.add('hidden');
-            generateSpinner.classList.remove('hidden');
+            generateLoadingIndicator.classList.remove('hidden');
             indonesianPromptTextarea.value = '';
             englishPromptTextarea.value = '';
+            suggestionPromptTextarea.value = ''; // Clear suggestions too
 
             // Read all current values from the DOM for static inputs
             const mainVideoDesc = mainVideoDescInput.value;
@@ -1141,9 +1178,78 @@
                 // Hide loading state
                 generatePromptBtn.disabled = false;
                 generateButtonText.classList.remove('hidden');
-                generateSpinner.classList.add('hidden');
+                generateLoadingIndicator.classList.add('hidden'); // Ensure it hides
             }
         }
+
+        // Function to generate prompt suggestions
+        async function generatePromptSuggestions() {
+            suggestionPromptTextarea.value = ''; // Clear previous suggestions
+            generateSuggestionBtn.disabled = true;
+            suggestionLoadingIndicator.classList.remove('hidden');
+
+            const currentEnglishPrompt = englishPromptTextarea.value;
+            if (!currentEnglishPrompt) {
+                showToastNotification('Harap buat prompt utama terlebih dahulu untuk mendapatkan saran.', 'error');
+                generateSuggestionBtn.disabled = false;
+                suggestionLoadingIndicator.classList.add('hidden');
+                return;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({
+                    role: "user",
+                    parts: [{
+                        text: `Berdasarkan prompt video Veo 3 berikut, berikan 3-5 ide atau saran kreatif untuk mengembangkan prompt ini lebih lanjut. Fokus pada aspek visual, suasana, atau alur cerita yang bisa diperkaya. Format sebagai daftar poin yang jelas.
+
+                        Prompt asli: "${currentEnglishPrompt}"
+
+                        Contoh saran:
+                        - Tambahkan efek visual kabut tipis di pagi hari.
+                        - Pertimbangkan transisi kamera yang lembut dari close-up ke wide shot.
+                        - Kembangkan karakter pendukung yang memberikan reaksi emosional.
+                        - Beri sentuhan warna cerah pada objek tertentu untuk penekanan.
+                        - Ciptakan momen kejutan kecil di akhir adegan.`
+                    }]
+                });
+
+                const payload = { contents: chatHistory };
+                const apiKey = "AIzaSyCeC4RzS5_GETZO0Ql8tJehZtV-rREnrpI";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API error: ${response.status} - ${errorData.error.message || 'Unknown error'}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const generatedSuggestions = result.candidates[0].content.parts[0].text;
+                    suggestionPromptTextarea.value = generatedSuggestions;
+                    showToastNotification('Saran prompt berhasil dibuat!', 'success');
+                } else {
+                    console.error("Unexpected API response structure for suggestions:", result);
+                    showToastNotification('Gagal menghasilkan saran prompt. Struktur respons tidak terduga.', 'error');
+                }
+            } catch (error) {
+                console.error("Error generating suggestions:", error);
+                showToastNotification(`Gagal menghasilkan saran: ${error.message}`, 'error');
+            } finally {
+                generateSuggestionBtn.disabled = false;
+                suggestionLoadingIndicator.classList.add('hidden');
+            }
+        }
+
 
         // --- Chat Button Animation ---
         const fullChatButtonText = "bingung? chat ramsky disini";
@@ -1176,6 +1282,7 @@
             addCharacterBtn.addEventListener('click', addCharacter);
             addDialogueBtn.addEventListener('click', addCharacterDialogue);
             generatePromptBtn.addEventListener('click', generatePrompt);
+            generateSuggestionBtn.addEventListener('click', generatePromptSuggestions); // New listener for suggestions
             copyIdPromptBtn.addEventListener('click', () => copyToClipboard(indonesianPromptTextarea.value, 'Bahasa Indonesia'));
             copyEnPromptBtn.addEventListener('click', () => copyToClipboard(englishPromptTextarea.value, 'Bahasa Inggris'));
             chatGeminiBtn.addEventListener('click', () => chatModal.classList.remove('hidden'));
