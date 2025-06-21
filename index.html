@@ -104,113 +104,7 @@
                         2. Detail Subjek (Karakter)
                     </label>
                     <div id="characters-container">
-                        <!-- Character input fields will be dynamically added here -->
-                        <div class="bg-green-100 p-4 rounded-lg mb-4 shadow-inner border border-green-200" data-character-id="1">
-                            <div class="flex justify-between items-center mb-3">
-                                <h4 class="font-semibold text-green-800 text-lg character-name-display">Karakter 1</h4>
-                                <!-- Remove button only if more than one character -->
-                                <!-- <button onclick="removeCharacter(1)" class="p-1 text-red-600 hover:text-red-800 transition duration-200" title="Hapus Karakter Ini">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                </button> -->
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div>
-                                    <label for="char-name-1" class="block text-sm font-medium text-gray-700 mb-1">Nama Karakter:</label>
-                                    <input
-                                        type="text"
-                                        id="char-name-1"
-                                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                                        placeholder="Contoh: Budi, Susi"
-                                        data-field="name"
-                                        value="Karakter 1"
-                                    />
-                                </div>
-                                <div>
-                                    <label for="char-gender-1" class="block text-sm font-medium text-gray-700 mb-1">Gender:</label>
-                                    <select
-                                        id="char-gender-1"
-                                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                                        data-field="gender"
-                                    >
-                                        <option value="">Pilih Gender</option>
-                                        <option value="Pria">Pria</option>
-                                        <option value="Wanita">Wanita</option>
-                                        <option value="Non-biner">Hewan</option>
-                                        <option value="Tidak Spesifik">Tidak Spesifik</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="char-nationality-1" class="block text-sm font-medium text-gray-700 mb-1">Kewarganegaraan:</label>
-                                    <input
-                                        type="text"
-                                        id="char-nationality-1"
-                                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                                        placeholder="Contoh: Indonesia, Amerika"
-                                        data-field="nationality"
-                                    />
-                                </div>
-                                <div>
-                                    <label for="char-age-1" class="block text-sm font-medium text-gray-700 mb-1">Umur:</label>
-                                    <input
-                                        type="text"
-                                        id="char-age-1"
-                                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                                        placeholder="Contoh: 30, Remaja, Anak-anak"
-                                        data-field="age"
-                                    />
-                                </div>
-                                <div>
-                                    <label for="char-clothing-1" class="block text-sm font-medium text-gray-700 mb-1">Pakaian:</label>
-                                    <input
-                                        type="text"
-                                        id="char-clothing-1"
-                                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                                        placeholder="Contoh: Kemeja biru, gaun merah"
-                                        data-field="clothing"
-                                    />
-                                </div>
-                                <div>
-                                    <label for="char-accessories-1" class="block text-sm font-medium text-gray-700 mb-1">Aksesori Tambahan:</label>
-                                    <input
-                                        type="text"
-                                        id="char-accessories-1"
-                                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                                        placeholder="Contoh: Topi, kacamata hitam"
-                                        data-field="accessories"
-                                    />
-                                </div>
-                                <div>
-                                    <label for="char-main-action-1" class="block text-sm font-medium text-gray-700 mb-1">Aksi Utama:</label>
-                                    <input
-                                        type="text"
-                                        id="char-main-action-1"
-                                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                                        placeholder="Contoh: Berlari, menulis, berbicara"
-                                        data-field="mainAction"
-                                    />
-                                </div>
-                                <div>
-                                    <label for="char-characteristics-1" class="block text-sm font-medium text-gray-700 mb-1">Karakteristik Subjek:</label>
-                                    <input
-                                        type="text"
-                                        id="char-characteristics-1"
-                                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                                        placeholder="Contoh: Tinggi, berambut pirang, atletis"
-                                        data-field="characteristics"
-                                    />
-                                </div>
-                                <div class="col-span-1 md:col-span-2">
-                                    <label for="char-emotion-1" class="block text-sm font-medium text-gray-700 mb-1">Emosi:</label>
-                                    <input
-                                        type="text"
-                                        id="char-emotion-1"
-                                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                                        placeholder="Contoh: Bahagia, sedih, marah, netral"
-                                        data-field="emotion"
-                                    />
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Character input fields will be dynamically added here by JavaScript -->
                     </div>
                     <button id="add-character-btn"
                         class="mt-2 w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-700 transition duration-200 ease-in-out flex items-center justify-center text-sm transform hover:-translate-y-0.5"
@@ -227,26 +121,7 @@
                         3. Isi Dialog Karakter (Bahasa Indonesia)
                     </label>
                     <div id="dialogues-container">
-                        <!-- Dialogue input fields will be dynamically added here -->
-                        <div class="flex items-center space-x-2 mb-3" data-dialogue-id="1">
-                            <input
-                                type="text"
-                                class="w-1/3 p-2 border border-purple-200 rounded-md shadow-inner bg-white focus:ring-purple-400 focus:border-purple-400 transition duration-200 ease-in-out placeholder-gray-400 text-gray-800"
-                                placeholder="Karakter 1"
-                                data-field="characterName"
-                                value="Karakter 1"
-                            />
-                            <textarea
-                                class="w-2/3 p-2 border border-purple-200 rounded-md shadow-inner bg-white focus:ring-purple-400 focus:border-purple-400 transition duration-200 ease-in-out placeholder-gray-400 text-gray-800"
-                                rows="1"
-                                placeholder="Dialog karakter..."
-                                data-field="dialogueText"
-                            ></textarea>
-                            <!-- Remove button only if more than one dialogue -->
-                            <!-- <button onclick="removeCharacterDialogue(1)" class="p-1 text-red-600 hover:text-red-800 transition duration-200" title="Hapus Dialog Ini">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            </button> -->
-                        </div>
+                        <!-- Dialogue input fields will be dynamically added here by JavaScript -->
                     </div>
                     <button id="add-dialogue-btn"
                         class="mt-2 w-full bg-purple-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-purple-700 transition duration-200 ease-in-out flex items-center justify-center text-sm transform hover:-translate-y-0.5"
@@ -679,19 +554,8 @@
         const toastIcon = document.getElementById('toast-icon');
 
         // Global state variables
-        let characterData = [{
-            id: 1,
-            name: 'Karakter 1',
-            gender: '',
-            nationality: '',
-            age: '',
-            clothing: '',
-            accessories: '',
-            mainAction: '',
-            characteristics: '',
-            emotion: ''
-        }];
-        let dialogueData = [{ id: 1, characterName: 'Karakter 1', dialogueText: '' }];
+        let characterData = [];
+        let dialogueData = [];
 
         // Options (duplicated from React component for direct HTML use)
         const genderOptions = ['', 'Pria', 'Wanita', 'Non-biner', 'Tidak Spesifik'];
@@ -927,7 +791,7 @@
             characterData.push(newChar);
             const newCharElement = createCharacterInput(newChar);
             charactersContainer.appendChild(newCharElement);
-            updateRemoveButtonsVisibility(charactersContainer, 'data-character-id');
+            updateRemoveButtonsVisibility(charactersContainer, '.remove-character-btn');
         }
 
         function removeCharacter(idToRemove) {
@@ -936,7 +800,7 @@
             if (charElementToRemove) {
                 charactersContainer.removeChild(charElementToRemove);
             }
-            updateRemoveButtonsVisibility(charactersContainer, 'data-character-id');
+            updateRemoveButtonsVisibility(charactersContainer, '.remove-character-btn');
         }
 
         function updateCharacterField(id, field, value) {
@@ -989,7 +853,7 @@
             dialogueData.push(newDialogue);
             const newDialogueElement = createDialogueInput(newDialogue);
             dialoguesContainer.appendChild(newDialogueElement);
-            updateRemoveButtonsVisibility(dialoguesContainer, 'data-dialogue-id');
+            updateRemoveButtonsVisibility(dialoguesContainer, '.remove-dialogue-btn');
         }
 
         function removeCharacterDialogue(idToRemove) {
@@ -998,7 +862,7 @@
             if (dialogueElementToRemove) {
                 dialoguesContainer.removeChild(dialogueElementToRemove);
             }
-            updateRemoveButtonsVisibility(dialoguesContainer, 'data-dialogue-id');
+            updateRemoveButtonsVisibility(dialoguesContainer, '.remove-dialogue-btn');
         }
 
         function updateDialogueField(id, field, value) {
@@ -1009,10 +873,10 @@
         }
 
         // Helper to control visibility of remove buttons
-        function updateRemoveButtonsVisibility(container, dataAttribute) {
-            const items = container.querySelectorAll(`[${dataAttribute}]`);
-            items.forEach(item => {
-                const removeBtn = item.querySelector('.remove-character-btn') || item.querySelector('.remove-dialogue-btn');
+        function updateRemoveButtonsVisibility(container, buttonSelector) {
+            const items = container.children;
+            Array.from(items).forEach(item => {
+                const removeBtn = item.querySelector(buttonSelector);
                 if (removeBtn) {
                     if (items.length <= 1) {
                         removeBtn.classList.add('hidden');
@@ -1122,7 +986,7 @@
                 ${cameraSettingsSection}
                 ${audioSettingsSection}
                 ${finalQualitySection}
-            `.trim();
+            `.trim().replace(/(\n\s*){3,}/g, '\n\n'); // Tidy up blank lines
 
             indonesianPromptTextarea.value = baseIndonesianPrompt;
 
@@ -1145,7 +1009,9 @@
                 });
 
                 const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyCeC4RzS5_GETZO0Ql8tJehZtV-rREnrpI";
+                // WARNING: Hardcoding API keys is not recommended for production applications.
+                // This key is added back based on user request.
+                const apiKey = "AIzaSyCeC4RzS5_GETZO0Ql8tJehZtV-rREnrpI"; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
@@ -1215,7 +1081,9 @@
                 });
 
                 const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyCeC4RzS5_GETZO0Ql8tJehZtV-rREnrpI";
+                // WARNING: Hardcoding API keys is not recommended for production applications.
+                // This key is added back based on user request.
+                const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
@@ -1272,11 +1140,11 @@
 
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Initial render of characters and dialogues
-            charactersContainer.appendChild(createCharacterInput(characterData[0]));
-            dialoguesContainer.appendChild(createDialogueInput(dialogueData[0]));
-            updateRemoveButtonsVisibility(charactersContainer, 'data-character-id');
-            updateRemoveButtonsVisibility(dialoguesContainer, 'data-dialogue-id');
+            // Clear containers and initialize
+            charactersContainer.innerHTML = '';
+            dialoguesContainer.innerHTML = '';
+            addCharacter();
+            addCharacterDialogue();
 
             // Attach event listeners
             addCharacterBtn.addEventListener('click', addCharacter);
