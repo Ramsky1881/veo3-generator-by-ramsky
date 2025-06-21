@@ -557,54 +557,9 @@
         let characterData = [];
         let dialogueData = [];
 
-        // Options (duplicated from React component for direct HTML use)
+        // Options
         const genderOptions = ['', 'Pria', 'Wanita', 'Non-biner', 'Tidak Spesifik'];
-        const locationOptions = [
-            '', 'Perkotaan', 'Pedesaan', 'Hutan', 'Pantai', 'Pegunungan', 'Luar Angkasa',
-            'Rumah', 'Kantor', 'Sekolah', 'Pabrik', 'Jalan Raya', 'Cafe', 'Restoran',
-            'Pusat Perbelanjaan', 'Reruntuhan', 'Kastil', 'Lab', 'Studio', 'Kapal', 'Pesawat'
-        ];
-        const timeOptions = [
-            '', 'Pagi Hari', 'Siang Hari', 'Sore Hari', 'Malam Hari', 'Senja (Golden Hour)', 'Subuh'
-        ];
-        const weatherOptions = [
-            '', 'Cerah', 'Berawan', 'Hujan Ringan', 'Hujan Lebat', 'Badai', 'Salju', 'Berkabut', 'Berangin'
-        ];
-        const seasonOptions = [
-            '', 'Musim Semi', 'Musim Panas', 'Musim Gugur', 'Musim Dingin'
-        ];
-        const cameraStyleOptions = [
-            '', 'Sinematik', 'Dokumenter', 'Vertikal (TikTok/Reels)', 'Horizontal (Film/TV)',
-            'Estetik', 'Vintage', 'Modern', 'Abstrak', 'Low-Poly', 'Anime', 'Cartoon',
-            'Realistis', 'Fantasi', 'Futuristik'
-        ];
-        const cameraMovementOptions = [
-            '', 'Static (Diam)', 'Pan (Horizontal)', 'Tilt (Vertikal)', 'Dolly (Maju/Mundur)',
-            'Track (Samping)', 'Crane (Atas/Bawah)', 'Handheld (Genggam)', 'Zoom In', 'Zoom Out'
-        ];
-        const cameraAngleOptions = [
-            '', 'Close-up', 'Medium Shot', 'Full Shot', 'Extreme Wide Shot',
-            'Low Angle', 'High Angle', 'Dutch Angle (Sudut Miring)', 'Bird\'s Eye View', 'Worm\'s Eye View', 'Over-the-Shoulder'
-        ];
-        const cameraFocusOptions = [
-            '', 'Shallow Depth of Field (Bokeh)', 'Deep Depth of Field (Semua Fokus)',
-            'Rack Focus (Perubahan Fokus)', 'Soft Focus', 'Hard Focus'
-        ];
-        const cameraLightingOptions = [
-            '', 'Natural (Alami)', 'Studio Lighting (Profesional)', 'Low Key (Gelap/Misterius)',
-            'High Key (Terang/Ceria)', 'Backlight', 'Frontlight', 'Side Light', 'Rembramdt Lighting', 'Volumetric Lighting'
-        ];
-        const colorGradingOptions = [
-            '', 'Hangat (Warm Tone)', 'Dingin (Cool Tone)', 'Monokrom (Hitam Putih)', 'Sepia',
-            'Vibrant (Cerah)', 'Muted (Pudar)', 'Sinematik (Film Look)', 'HDR'
-        ];
-        const dialogueTypeOptions = [
-            '', 'Monolog', 'Dialog antar Karakter', 'Narasi', 'Tanpa Dialog'
-        ];
-        const soundMoodOptions = [
-            '', 'Ceria', 'Mencekam', 'Misterius', 'Mengharukan', 'Enerjik', 'Santai', 'Tegang'
-        ];
-
+        
         // Function to show toast notification
         function showToastNotification(message, type = 'success', duration = 3000) {
             toastMessageSpan.textContent = message;
@@ -655,105 +610,44 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                         <label for="char-name-${charData.id}" class="block text-sm font-medium text-gray-700 mb-1">Nama Karakter:</label>
-                        <input
-                            type="text"
-                            id="char-name-${charData.id}"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                            placeholder="Contoh: Budi, Susi"
-                            data-field="name"
-                            value="${charData.name}"
-                        />
+                        <input type="text" id="char-name-${charData.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400" placeholder="Contoh: Budi, Susi" data-field="name" value="${charData.name}" />
                     </div>
                     <div>
                         <label for="char-gender-${charData.id}" class="block text-sm font-medium text-gray-700 mb-1">Gender:</label>
-                        <select
-                            id="char-gender-${charData.id}"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                            data-field="gender"
-                        >
+                        <select id="char-gender-${charData.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400" data-field="gender">
                             ${genderOptions.map(option => `<option value="${option}" ${charData.gender === option ? 'selected' : ''}>${option || 'Pilih Gender'}</option>`).join('')}
                         </select>
                     </div>
                     <div>
                         <label for="char-nationality-${charData.id}" class="block text-sm font-medium text-gray-700 mb-1">Kewarganegaraan:</label>
-                        <input
-                            type="text"
-                            id="char-nationality-${charData.id}"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                            placeholder="Contoh: Indonesia, Amerika"
-                            data-field="nationality"
-                            value="${charData.nationality}"
-                        />
+                        <input type="text" id="char-nationality-${charData.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400" placeholder="Contoh: Indonesia, Amerika" data-field="nationality" value="${charData.nationality}" />
                     </div>
                     <div>
                         <label for="char-age-${charData.id}" class="block text-sm font-medium text-gray-700 mb-1">Umur:</label>
-                        <input
-                            type="text"
-                            id="char-age-${charData.id}"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                            placeholder="Contoh: 30, Remaja, Anak-anak"
-                            data-field="age"
-                            value="${charData.age}"
-                        />
+                        <input type="text" id="char-age-${charData.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400" placeholder="Contoh: 30, Remaja, Anak-anak" data-field="age" value="${charData.age}" />
                     </div>
                     <div>
                         <label for="char-clothing-${charData.id}" class="block text-sm font-medium text-gray-700 mb-1">Pakaian:</label>
-                        <input
-                            type="text"
-                            id="char-clothing-${charData.id}"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                            placeholder="Contoh: Kemeja biru, gaun merah"
-                            data-field="clothing"
-                            value="${charData.clothing}"
-                        />
+                        <input type="text" id="char-clothing-${charData.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400" placeholder="Contoh: Kemeja biru, gaun merah" data-field="clothing" value="${charData.clothing}" />
                     </div>
                     <div>
                         <label for="char-accessories-${charData.id}" class="block text-sm font-medium text-gray-700 mb-1">Aksesori Tambahan:</label>
-                        <input
-                            type="text"
-                            id="char-accessories-${charData.id}"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                            placeholder="Contoh: Topi, kacamata hitam"
-                            data-field="accessories"
-                            value="${charData.accessories}"
-                        />
+                        <input type="text" id="char-accessories-${charData.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400" placeholder="Contoh: Topi, kacamata hitam" data-field="accessories" value="${charData.accessories}" />
                     </div>
                     <div>
                         <label for="char-main-action-${charData.id}" class="block text-sm font-medium text-gray-700 mb-1">Aksi Utama:</label>
-                        <input
-                            type="text"
-                            id="char-main-action-${charData.id}"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                            placeholder="Contoh: Berlari, menulis, berbicara"
-                            data-field="mainAction"
-                            value="${charData.mainAction}"
-                        />
+                        <input type="text" id="char-main-action-${charData.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400" placeholder="Contoh: Berlari, menulis, berbicara" data-field="mainAction" value="${charData.mainAction}" />
                     </div>
                     <div>
                         <label for="char-characteristics-${charData.id}" class="block text-sm font-medium text-gray-700 mb-1">Karakteristik Subjek:</label>
-                        <input
-                            type="text"
-                            id="char-characteristics-${charData.id}"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                            placeholder="Contoh: Tinggi, berambut pirang, atletis"
-                            data-field="characteristics"
-                            value="${charData.characteristics}"
-                        />
+                        <input type="text" id="char-characteristics-${charData.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400" placeholder="Contoh: Tinggi, berambut pirang, atletis" data-field="characteristics" value="${charData.characteristics}" />
                     </div>
                     <div class="col-span-1 md:col-span-2">
                         <label for="char-emotion-${charData.id}" class="block text-sm font-medium text-gray-700 mb-1">Emosi:</label>
-                        <input
-                            type="text"
-                            id="char-emotion-${charData.id}"
-                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400"
-                            placeholder="Contoh: Bahagia, sedih, marah, netral"
-                            data-field="emotion"
-                            value="${charData.emotion}"
-                        />
+                        <input type="text" id="char-emotion-${charData.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-400 focus:border-green-400" placeholder="Contoh: Bahagia, sedih, marah, netral" data-field="emotion" value="${charData.emotion}" />
                     </div>
                 </div>
             `;
-            // Add change listeners for the new inputs
             charDiv.querySelectorAll('input, select').forEach(input => {
                 input.addEventListener('input', (e) => {
                     const field = e.target.dataset.field;
@@ -764,50 +658,31 @@
                     }
                 });
             });
-            // Add listener for remove button if it exists
             const removeBtn = charDiv.querySelector('.remove-character-btn');
             if (removeBtn) {
-                removeBtn.addEventListener('click', (e) => {
-                    removeCharacter(parseInt(e.currentTarget.dataset.id));
-                });
+                removeBtn.addEventListener('click', (e) => removeCharacter(parseInt(e.currentTarget.dataset.id)));
             }
             return charDiv;
         }
 
         function addCharacter() {
             const newId = characterData.length > 0 ? Math.max(...characterData.map(c => c.id)) + 1 : 1;
-            const newChar = {
-                id: newId,
-                name: `Karakter ${newId}`,
-                gender: '',
-                nationality: '',
-                age: '',
-                clothing: '',
-                accessories: '',
-                mainAction: '',
-                characteristics: '',
-                emotion: ''
-            };
+            const newChar = { id: newId, name: `Karakter ${newId}`, gender: '', nationality: '', age: '', clothing: '', accessories: '', mainAction: '', characteristics: '', emotion: '' };
             characterData.push(newChar);
-            const newCharElement = createCharacterInput(newChar);
-            charactersContainer.appendChild(newCharElement);
+            charactersContainer.appendChild(createCharacterInput(newChar));
             updateRemoveButtonsVisibility(charactersContainer, '.remove-character-btn');
         }
 
         function removeCharacter(idToRemove) {
             characterData = characterData.filter(char => char.id !== idToRemove);
             const charElementToRemove = charactersContainer.querySelector(`[data-character-id="${idToRemove}"]`);
-            if (charElementToRemove) {
-                charactersContainer.removeChild(charElementToRemove);
-            }
+            if (charElementToRemove) charactersContainer.removeChild(charElementToRemove);
             updateRemoveButtonsVisibility(charactersContainer, '.remove-character-btn');
         }
 
         function updateCharacterField(id, field, value) {
             const index = characterData.findIndex(char => char.id === id);
-            if (index !== -1) {
-                characterData[index][field] = value;
-            }
+            if (index !== -1) characterData[index][field] = value;
         }
 
         // --- Dialogue Management Functions ---
@@ -816,19 +691,8 @@
             dialogueDiv.className = 'flex items-center space-x-2 mb-3';
             dialogueDiv.setAttribute('data-dialogue-id', dialogueItem.id);
             dialogueDiv.innerHTML = `
-                <input
-                    type="text"
-                    class="w-1/3 p-2 border border-purple-200 rounded-md shadow-inner bg-white focus:ring-purple-400 focus:border-purple-400 transition duration-200 ease-in-out placeholder-gray-400 text-gray-800"
-                    placeholder="Karakter ${dialogueItem.id}"
-                    data-field="characterName"
-                    value="${dialogueItem.characterName}"
-                />
-                <textarea
-                    class="w-2/3 p-2 border border-purple-200 rounded-md shadow-inner bg-white focus:ring-purple-400 focus:border-purple-400 transition duration-200 ease-in-out placeholder-gray-400 text-gray-800"
-                    rows="1"
-                    placeholder="Dialog karakter..."
-                    data-field="dialogueText"
-                >${dialogueItem.dialogueText}</textarea>
+                <input type="text" class="w-1/3 p-2 border border-purple-200 rounded-md shadow-inner bg-white focus:ring-purple-400 focus:border-purple-400" placeholder="Karakter ${dialogueItem.id}" data-field="characterName" value="${dialogueItem.characterName}" />
+                <textarea class="w-2/3 p-2 border border-purple-200 rounded-md shadow-inner bg-white focus:ring-purple-400 focus:border-purple-400" rows="1" placeholder="Dialog karakter..." data-field="dialogueText">${dialogueItem.dialogueText}</textarea>
                 <button class="p-1 text-red-600 hover:text-red-800 transition duration-200 remove-dialogue-btn" title="Hapus Dialog Ini" data-id="${dialogueItem.id}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                 </button>
@@ -841,9 +705,7 @@
                 });
             });
             const removeBtn = dialogueDiv.querySelector('.remove-dialogue-btn');
-            removeBtn.addEventListener('click', (e) => {
-                removeCharacterDialogue(parseInt(e.currentTarget.dataset.id));
-            });
+            removeBtn.addEventListener('click', (e) => removeCharacterDialogue(parseInt(e.currentTarget.dataset.id)));
             return dialogueDiv;
         }
 
@@ -851,25 +713,20 @@
             const newId = dialogueData.length > 0 ? Math.max(...dialogueData.map(d => d.id)) + 1 : 1;
             const newDialogue = { id: newId, characterName: `Karakter ${newId}`, dialogueText: '' };
             dialogueData.push(newDialogue);
-            const newDialogueElement = createDialogueInput(newDialogue);
-            dialoguesContainer.appendChild(newDialogueElement);
+            dialoguesContainer.appendChild(createDialogueInput(newDialogue));
             updateRemoveButtonsVisibility(dialoguesContainer, '.remove-dialogue-btn');
         }
 
         function removeCharacterDialogue(idToRemove) {
             dialogueData = dialogueData.filter(dialogue => dialogue.id !== idToRemove);
             const dialogueElementToRemove = dialoguesContainer.querySelector(`[data-dialogue-id="${idToRemove}"]`);
-            if (dialogueElementToRemove) {
-                dialoguesContainer.removeChild(dialogueElementToRemove);
-            }
+            if (dialogueElementToRemove) dialoguesContainer.removeChild(dialogueElementToRemove);
             updateRemoveButtonsVisibility(dialoguesContainer, '.remove-dialogue-btn');
         }
 
         function updateDialogueField(id, field, value) {
             const index = dialogueData.findIndex(d => d.id === id);
-            if (index !== -1) {
-                dialogueData[index][field] = value;
-            }
+            if (index !== -1) dialogueData[index][field] = value;
         }
 
         // Helper to control visibility of remove buttons
@@ -877,13 +734,7 @@
             const items = container.children;
             Array.from(items).forEach(item => {
                 const removeBtn = item.querySelector(buttonSelector);
-                if (removeBtn) {
-                    if (items.length <= 1) {
-                        removeBtn.classList.add('hidden');
-                    } else {
-                        removeBtn.classList.remove('hidden');
-                    }
-                }
+                if (removeBtn) removeBtn.classList.toggle('hidden', items.length <= 1);
             });
         }
 
@@ -896,9 +747,9 @@
             generateLoadingIndicator.classList.remove('hidden');
             indonesianPromptTextarea.value = '';
             englishPromptTextarea.value = '';
-            suggestionPromptTextarea.value = ''; // Clear suggestions too
+            suggestionPromptTextarea.value = '';
 
-            // Read all current values from the DOM for static inputs
+            // Read all form values
             const mainVideoDesc = mainVideoDescInput.value;
             const location = locationSelect.value;
             const time = timeSelect.value;
@@ -917,100 +768,87 @@
             const videoQuality = videoQualityInput.value;
             const additionalDetails = additionalDetailsTextarea.value;
 
-
-            // Format subject characters for the prompt
-            const formattedCharacters = characterData
-                .map(char => {
-                    let details = [`Nama: ${char.name || 'Tidak disebutkan'}`];
-                    if (char.gender) details.push(`Gender: ${char.gender}`);
-                    if (char.nationality) details.push(`Kewarganegaraan: ${char.nationality}`);
-                    if (char.age) details.push(`Umur: ${char.age}`);
-                    if (char.clothing) details.push(`Pakaian: ${char.clothing}`);
-                    if (char.accessories) details.push(`Aksesori Tambahan: ${char.accessories}`);
-                    if (char.mainAction) details.push(`Aksi Utama: ${char.mainAction}`);
-                    if (char.characteristics) details.push(`Karakteristik: ${char.characteristics}`);
-                    if (char.emotion) details.push(`Emosi: ${char.emotion}`);
-                    return `- ${details.join(', ')}`;
-                })
-                .join('\n');
-
+            // Format sections
+            const formattedCharacters = characterData.map(char => {
+                let details = [`Nama: ${char.name || 'Tidak disebutkan'}`];
+                if (char.gender) details.push(`Gender: ${char.gender}`);
+                if (char.nationality) details.push(`Kewarganegaraan: ${char.nationality}`);
+                if (char.age) details.push(`Umur: ${char.age}`);
+                if (char.clothing) details.push(`Pakaian: ${char.clothing}`);
+                if (char.accessories) details.push(`Aksesori: ${char.accessories}`);
+                if (char.mainAction) details.push(`Aksi: ${char.mainAction}`);
+                if (char.characteristics) details.push(`Karakteristik: ${char.characteristics}`);
+                if (char.emotion) details.push(`Emosi: ${char.emotion}`);
+                return `- ${details.join(', ')}`;
+            }).join('\n');
             const characterSection = formattedCharacters ? `Detail Subjek (Karakter):\n${formattedCharacters}` : 'Detail Subjek (Karakter): Tidak ada.';
 
-            // Format dialogues for the prompt
-            const formattedDialogues = dialogueData
-                .filter(d => d.dialogueText.trim() !== '') // Only include dialogues that have text
-                .map(d => `${d.characterName}: "${d.dialogueText}"`)
-                .join('\n');
-
+            const formattedDialogues = dialogueData.filter(d => d.dialogueText.trim() !== '').map(d => `${d.characterName}: "${d.dialogueText}"`).join('\n');
             const dialogueSection = formattedDialogues ? `Isi Dialog Karakter:\n${formattedDialogues}` : 'Isi Dialog Karakter: Tidak ada dialog.';
 
-            // Format Background details
-            const backgroundDetails = [];
-            if (location) backgroundDetails.push(`Lokasi: ${location}`);
-            if (time) backgroundDetails.push(`Waktu: ${time}`);
-            if (weather) backgroundDetails.push(`Cuaca: ${weather}`);
-            if (season) backgroundDetails.push(`Musim: ${season}`);
+            const backgroundDetails = [
+                location && `Lokasi: ${location}`,
+                time && `Waktu: ${time}`,
+                weather && `Cuaca: ${weather}`,
+                season && `Musim: ${season}`
+            ].filter(Boolean);
             const backgroundSection = backgroundDetails.length > 0 ? `Latar Belakang:\n${backgroundDetails.map(d => `- ${d}`).join('\n')}` : 'Latar Belakang: Tidak ada.';
 
-            // Format Camera Settings details
-            const cameraSettingsDetails = [];
-            if (cameraStyle) cameraSettingsDetails.push(`Gaya: ${cameraStyle}`);
-            if (cameraMovement) cameraSettingsDetails.push(`Pergerakan Kamera: ${cameraMovement}`);
-            if (cameraAngle) cameraSettingsDetails.push(`Sudut Kamera: ${cameraAngle}`);
-            if (cameraFocus) cameraSettingsDetails.push(`Fokus: ${cameraFocus}`);
-            if (cameraLighting) cameraSettingsDetails.push(`Pencahayaan: ${cameraLighting}`);
-            if (colorGrading) cameraSettingsDetails.push(`Gradasi Warna: ${colorGrading}`);
+            const cameraSettingsDetails = [
+                cameraStyle && `Gaya: ${cameraStyle}`,
+                cameraMovement && `Pergerakan: ${cameraMovement}`,
+                cameraAngle && `Sudut: ${cameraAngle}`,
+                cameraFocus && `Fokus: ${cameraFocus}`,
+                cameraLighting && `Pencahayaan: ${cameraLighting}`,
+                colorGrading && `Gradasi Warna: ${colorGrading}`
+            ].filter(Boolean);
             const cameraSettingsSection = cameraSettingsDetails.length > 0 ? `Pengaturan Kamera:\n${cameraSettingsDetails.map(d => `- ${d}`).join('\n')}` : 'Pengaturan Kamera: Default.';
 
-            // Format Audio Settings details
-            const audioSettingsDetails = [];
-            if (dialogueType) audioSettingsDetails.push(`Tipe Dialog: ${dialogueType}`);
-            if (soundMood) audioSettingsDetails.push(`Mood Suara: ${soundMood}`);
-            if (environmentSound) audioSettingsDetails.push(`Suara Lingkungan: ${environmentSound}`);
-            if (backgroundMusic) audioSettingsDetails.push(`Musik Latar: ${backgroundMusic}`);
+            const audioSettingsDetails = [
+                dialogueType && `Tipe Dialog: ${dialogueType}`,
+                soundMood && `Mood Suara: ${soundMood}`,
+                environmentSound && `Suara Lingkungan: ${environmentSound}`,
+                backgroundMusic && `Musik Latar: ${backgroundMusic}`
+            ].filter(Boolean);
             const audioSettingsSection = audioSettingsDetails.length > 0 ? `Pengaturan Audio:\n${audioSettingsDetails.map(d => `- ${d}`).join('\n')}` : 'Pengaturan Audio: Tidak ada.';
+            
+            const qualityDetailsContent = [
+                videoQuality && `Kualitas Video: ${videoQuality}`,
+                additionalDetails && `Detail Tambahan: ${additionalDetails}`
+            ].filter(Boolean);
+            const finalQualitySection = qualityDetailsContent.length > 0 ? `Kualitas & Detail Tambahan:\n${qualityDetailsContent.map(d => `- ${d}`).join('\n')}` : 'Kualitas & Detail Tambahan: Default.';
+            
+            // Build the prompt parts
+            const promptForTranslation = [
+                `Video Utama: ${mainVideoDesc || 'Sebuah adegan video yang menarik.'}`,
+                characterSection,
+                backgroundSection,
+                cameraSettingsSection,
+                audioSettingsSection,
+                finalQualitySection
+            ].join('\n\n').trim().replace(/(\n\s*){3,}/g, '\n\n');
 
-            // Format Video Quality & Additional Details
-            const qualityDetailsSection = [];
-            if (videoQuality) qualityDetailsSection.push(`Kualitas Video: ${videoQuality}`);
-            if (additionalDetails) qualityDetailsSection.push(`Detail Tambahan: ${additionalDetails}`);
-            const finalQualitySection = qualityDetailsSection.length > 0 ? `Kualitas Video & Detail Tambahan:\n${qualityDetailsSection.map(d => `- ${d}`).join('\n')}` : 'Kualitas Video & Detail Tambahan: Default.';
-
-
-            // Construct the base Indonesian prompt
-            const baseIndonesianPrompt = `
-                Video Utama: ${mainVideoDesc || 'Sebuah adegan video yang menarik.'}
-                ${characterSection}
-                ${dialogueSection}
-                ${backgroundSection}
-                ${cameraSettingsSection}
-                ${audioSettingsSection}
-                ${finalQualitySection}
-            `.trim().replace(/(\n\s*){3,}/g, '\n\n'); // Tidy up blank lines
-
-            indonesianPromptTextarea.value = baseIndonesianPrompt;
+            const fullIndonesianPrompt = [
+                `Video Utama: ${mainVideoDesc || 'Sebuah adegan video yang menarik.'}`,
+                characterSection,
+                dialogueSection,
+                backgroundSection,
+                cameraSettingsSection,
+                audioSettingsSection,
+                finalQualitySection
+            ].join('\n\n').trim().replace(/(\n\s*){3,}/g, '\n\n');
+            
+            indonesianPromptTextarea.value = fullIndonesianPrompt;
 
             try {
-                // Call Gemini API to enhance and translate the prompt
-                let chatHistory = [];
-                chatHistory.push({
+                let chatHistory = [{
                     role: "user",
                     parts: [{
-                        text: `Terjemahkan dan kembangkan prompt video berikut ke dalam Bahasa Inggris yang sangat detail dan sinematik untuk Veo 3 AI:
-                        "${baseIndonesianPrompt}"
-
-                        Sertakan detail seperti gaya visual, pencahayaan, tekstur, suasana hati, dan komposisi kamera. Prompt harus siap untuk digunakan langsung oleh AI generasi video.
-
-                        Contoh pengembangan:
-                        "A breathtaking panoramic view of a lush, ancient forest at dawn. Golden light filters through the dense canopy, highlighting dew-kissed spiderwebs and a faint mist rising from the forest floor. The atmosphere is serene and mystical. Focus on vibrant greens and deep earthy tones. The air feels cool and fresh. A gentle breeze rustles the leaves."
-
-                        Pastikan outputnya hanya prompt bahasa Inggris saja, tanpa tambahan kalimat pembuka atau penutup. The response should be a complete sentence or paragraph.`
+                        text: `Translate and elaborate the following Indonesian video prompt into a highly detailed and cinematic English prompt suitable for a video AI like Veo 3. Do not add any introductory text, just provide the final English prompt. Here is the prompt to translate:\n\n"${promptForTranslation}"`
                     }]
-                });
+                }];
 
                 const payload = { contents: chatHistory };
-                // WARNING: Hardcoding API keys is not recommended for production applications.
-                // This key is added back based on user request.
                 const apiKey = "AIzaSyCeC4RzS5_GETZO0Ql8tJehZtV-rREnrpI"; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
@@ -1027,11 +865,10 @@
 
                 const result = await response.json();
 
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const generatedEnglishPrompt = result.candidates[0].content.parts[0].text;
-                    englishPromptTextarea.value = generatedEnglishPrompt;
+                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts.length > 0) {
+                    let generatedEnglishPrompt = result.candidates[0].content.parts[0].text;
+                    const dialogueSectionForEnglishPrompt = formattedDialogues ? `\n\nDialogues (Original Language):\n${formattedDialogues}` : '';
+                    englishPromptTextarea.value = generatedEnglishPrompt + dialogueSectionForEnglishPrompt;
                     showToastNotification('Prompt berhasil dibuat!', 'success');
                 } else {
                     console.error("Unexpected API response structure:", result);
@@ -1041,10 +878,9 @@
                 console.error("Error generating prompt:", error);
                 showToastNotification(`Gagal menghasilkan prompt: ${error.message}`, 'error');
             } finally {
-                // Hide loading state
                 generatePromptBtn.disabled = false;
                 generateButtonText.classList.remove('hidden');
-                generateLoadingIndicator.classList.add('hidden'); // Ensure it hides
+                generateLoadingIndicator.classList.add('hidden');
             }
         }
 
@@ -1063,27 +899,15 @@
             }
 
             try {
-                let chatHistory = [];
-                chatHistory.push({
+                let chatHistory = [{
                     role: "user",
                     parts: [{
-                        text: `Berdasarkan prompt video Veo 3 berikut, berikan 3-5 ide atau saran kreatif untuk mengembangkan prompt ini lebih lanjut. Fokus pada aspek visual, suasana, atau alur cerita yang bisa diperkaya. Format sebagai daftar poin yang jelas.
-
-                        Prompt asli: "${currentEnglishPrompt}"
-
-                        Contoh saran:
-                        - Tambahkan efek visual kabut tipis di pagi hari.
-                        - Pertimbangkan transisi kamera yang lembut dari close-up ke wide shot.
-                        - Kembangkan karakter pendukung yang memberikan reaksi emosional.
-                        - Beri sentuhan warna cerah pada objek tertentu untuk penekanan.
-                        - Ciptakan momen kejutan kecil di akhir adegan.`
+                        text: `Berdasarkan prompt video Veo 3 berikut, berikan 3-5 ide atau saran kreatif untuk mengembangkan prompt ini lebih lanjut. Fokus pada aspek visual, suasana, atau alur cerita yang bisa diperkaya. Format sebagai daftar poin yang jelas.\n\nPrompt asli: "${currentEnglishPrompt}"`
                     }]
-                });
+                }];
 
                 const payload = { contents: chatHistory };
-                // WARNING: Hardcoding API keys is not recommended for production applications.
-                // This key is added back based on user request.
-                const apiKey = "";
+                const apiKey = "AIzaSyCeC4RzS5_GETZO0Ql8tJehZtV-rREnrpI";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
@@ -1092,22 +916,15 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`API error: ${response.status} - ${errorData.error.message || 'Unknown error'}`);
-                }
+                if (!response.ok) throw new Error(`API error: ${response.status}`);
 
                 const result = await response.json();
 
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const generatedSuggestions = result.candidates[0].content.parts[0].text;
-                    suggestionPromptTextarea.value = generatedSuggestions;
+                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts.length > 0) {
+                    suggestionPromptTextarea.value = result.candidates[0].content.parts[0].text;
                     showToastNotification('Saran prompt berhasil dibuat!', 'success');
                 } else {
-                    console.error("Unexpected API response structure for suggestions:", result);
-                    showToastNotification('Gagal menghasilkan saran prompt. Struktur respons tidak terduga.', 'error');
+                    showToastNotification('Gagal menghasilkan saran prompt.', 'error');
                 }
             } catch (error) {
                 console.error("Error generating suggestions:", error);
@@ -1128,36 +945,32 @@
             if (chatTextCurrentIndex <= fullChatButtonText.length) {
                 chatButtonTextSpan.textContent = fullChatButtonText.substring(0, chatTextCurrentIndex);
                 chatTextCurrentIndex++;
-                chatTextTimeout = setTimeout(animateChatText, 100); // Typing speed
+                chatTextTimeout = setTimeout(animateChatText, 100);
             } else {
-                // Once fully typed, wait and then reset to start typing again
                 chatTextTimeout = setTimeout(() => {
                     chatTextCurrentIndex = 0;
                     animateChatText();
-                }, 2000); // Pause before re-typing
+                }, 2000);
             }
         }
 
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Clear containers and initialize
             charactersContainer.innerHTML = '';
             dialoguesContainer.innerHTML = '';
             addCharacter();
             addCharacterDialogue();
 
-            // Attach event listeners
             addCharacterBtn.addEventListener('click', addCharacter);
             addDialogueBtn.addEventListener('click', addCharacterDialogue);
             generatePromptBtn.addEventListener('click', generatePrompt);
-            generateSuggestionBtn.addEventListener('click', generatePromptSuggestions); // New listener for suggestions
+            generateSuggestionBtn.addEventListener('click', generatePromptSuggestions);
             copyIdPromptBtn.addEventListener('click', () => copyToClipboard(indonesianPromptTextarea.value, 'Bahasa Indonesia'));
             copyEnPromptBtn.addEventListener('click', () => copyToClipboard(englishPromptTextarea.value, 'Bahasa Inggris'));
             chatGeminiBtn.addEventListener('click', () => chatModal.classList.remove('hidden'));
             closeChatModalBtn.addEventListener('click', () => chatModal.classList.add('hidden'));
             confirmCloseChatModalBtn.addEventListener('click', () => chatModal.classList.add('hidden'));
 
-            // Start chat button animation
             animateChatText();
         });
 
