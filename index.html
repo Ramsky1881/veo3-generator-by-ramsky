@@ -62,27 +62,53 @@
                     <textarea id="mainDesc" class="w-full p-3 border border-blue-200 rounded-md shadow-inner bg-white" rows="3" placeholder="Contoh: Seekor kucing oranye melompat ke atas tumpukan buku di perpustakaan."></textarea>
                 </div>
 
-                <!-- 2. Detail Karakter -->
+                <!-- 2. Detail Karakter & Dialog -->
                 <div class="bg-green-50 p-4 rounded-lg shadow-sm border border-green-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <label class="block text-base font-semibold text-green-800">2. Detail Karakter & Dialog</label>
-                        <div class="flex items-center">
-                            <span class="text-sm font-medium text-gray-700 mr-3">Gunakan Karakter</span>
-                            <label for="character-toggle" class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="character-toggle" class="sr-only peer" checked>
-                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 peer-checked:bg-indigo-600"></div>
-                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-full"></div>
-                            </label>
+                    <div class="space-y-4">
+                        <!-- Character Toggle -->
+                        <div class="flex justify-between items-center">
+                            <label class="block text-base font-semibold text-green-800">2. Detail Karakter</label>
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium text-gray-700 mr-3">Gunakan Karakter</span>
+                                <label for="character-toggle" class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="character-toggle" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 peer-checked:bg-indigo-600"></div>
+                                    <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-full"></div>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div id="character-section-content">
-                        <div id="characters-container">
-                            <!-- Character input fields will be dynamically added here -->
+                        <!-- Character Content -->
+                        <div id="character-section-content">
+                            <div id="characters-container">
+                                <!-- Character input fields will be dynamically added here -->
+                            </div>
+                            <button id="add-character-btn" class="mt-2 w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-700 transition duration-200 ease-in-out flex items-center justify-center text-sm transform hover:-translate-y-0.5">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                Tambah Karakter
+                            </button>
                         </div>
-                        <button id="add-character-btn" class="mt-2 w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-700 transition duration-200 ease-in-out flex items-center justify-center text-sm transform hover:-translate-y-0.5">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            Tambah Karakter
-                        </button>
+                         <!-- Dialogue Toggle -->
+                         <div class="flex justify-between items-center pt-4 border-t border-green-200">
+                            <label class="block text-base font-semibold text-green-800">Dialog & Narasi</label>
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium text-gray-700 mr-3">Gunakan Dialog</span>
+                                <label for="dialogue-toggle" class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="dialogue-toggle" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 peer-checked:bg-indigo-600"></div>
+                                    <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-full"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- Dialogue Content -->
+                        <div id="dialogue-section-content" class="hidden">
+                             <div id="dialogues-container">
+                                <!-- Dialogue input fields will be dynamically added here -->
+                            </div>
+                            <button id="add-dialogue-btn" class="mt-2 w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-700 transition duration-200 ease-in-out flex items-center justify-center text-sm transform hover:-translate-y-0.5">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                Tambah Dialog
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -105,8 +131,8 @@
                                 <option value="">Pilih Gaya</option>
                                 <option value="Sinematik">Sinematik</option>
                                 <option value="Dokumenter">Dokumenter</option>
-                                <option value="Vertikal (TikTok/Reels)">Vertikal</option>
-                                <option value="Horizontal (Film/TV)">Horizontal</option>
+                                <option value="Vertikal">Vertikal</option>
+                                <option value="Horizontal">Horizontal</option>
                                 <option value="Anime">Anime</option>
                             </select>
                         </div>
@@ -292,19 +318,16 @@
         </div>
     </div>
 
-    <!-- Chat Gemini Button -->
     <button id="chat-gemini-btn" class="fixed bottom-8 right-8 bg-gradient-to-r from-teal-500 to-green-600 text-white py-4 px-8 rounded-full shadow-xl hover:from-teal-600 hover:to-green-700 transition-all duration-300 ease-in-out transform hover:scale-110 flex items-center group overflow-hidden focus:outline-none focus:ring-4 focus:ring-teal-300 animate-breathe">
         <span class="mr-3 text-3xl">💬</span>
         <span class="font-bold text-xl whitespace-nowrap overflow-hidden pr-2" id="chat-button-text"></span>
     </button>
 
-    <!-- Toast Notification -->
     <div id="toast-notification" class="hidden fixed bottom-8 left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-xl shadow-xl animate-fade-in-up-toast z-50 text-lg flex items-center">
         <svg id="toast-icon" class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
         <span id="toast-message"></span>
     </div>
 
-    <!-- Chat Modal -->
     <div id="chat-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl p-8 shadow-2xl max-w-md w-full relative transform scale-95 animate-scale-in">
             <button id="close-chat-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold transition duration-200">&times;</button>
@@ -323,6 +346,11 @@
         const characterSectionContent = document.getElementById('character-section-content');
         const backgroundTextarea = document.getElementById('background');
         
+        const dialoguesContainer = document.getElementById('dialogues-container');
+        const addDialogueBtn = document.getElementById('add-dialogue-btn');
+        const dialogueToggle = document.getElementById('dialogue-toggle');
+        const dialogueSectionContent = document.getElementById('dialogue-section-content');
+
         const cameraStyle = document.getElementById('cameraStyle');
         const cameraMovement = document.getElementById('cameraMovement');
         const cameraAngle = document.getElementById('cameraAngle');
@@ -356,6 +384,7 @@
 
         // Global state variables
         let characterData = [];
+        let dialogueData = [];
         const genderOptions = ['', 'Pria', 'Wanita', 'Non-biner', 'Tidak Spesifik'];
         
         function showToast(message, type = 'success', duration = 3000) {
@@ -393,30 +422,25 @@
             charDiv.setAttribute('data-character-id', char.id);
             charDiv.innerHTML = `
                 <div class="flex justify-between items-center mb-3">
-                    <h4 class="font-semibold text-green-800 text-lg character-name-display">${char.name}</h4>
+                    <input type="text" class="w-full p-1 font-semibold text-green-800 text-lg bg-transparent border-b border-green-300 focus:outline-none character-name-input" data-field="name" value="${char.name}" placeholder="Nama Karakter"/>
                     <button class="p-1 text-red-600 hover:text-red-800 transition duration-200 remove-character-btn" title="Hapus Karakter" data-id="${char.id}">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Nama:</label><input type="text" class="w-full p-2 border-gray-300 rounded-md" data-field="name" value="${char.name}" /></div>
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Gender:</label><select class="w-full p-2 border-gray-300 rounded-md" data-field="gender">${genderOptions.map(o => `<option value="${o}" ${char.gender === o ? 'selected' : ''}>${o||'Pilih'}</option>`).join('')}</select></div>
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Pakaian:</label><input type="text" class="w-full p-2 border-gray-300 rounded-md" data-field="clothing" value="${char.clothing}" /></div>
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Aksi:</label><input type="text" class="w-full p-2 border-gray-300 rounded-md" data-field="action" value="${char.action}" /></div>
                     <div class="col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Karakteristik & Emosi:</label><input type="text" class="w-full p-2 border-gray-300 rounded-md" data-field="characteristics" value="${char.characteristics}" /></div>
-                    <div class="col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Dialog:</label><textarea class="w-full p-2 border-gray-300 rounded-md" rows="2" data-field="dialogue" placeholder="Bahasa Indonesia: Tulis dialog untuk karakter ini...">${char.dialogue}</textarea></div>
                 </div>`;
             
-            charDiv.querySelectorAll('input, select, textarea').forEach(input => {
+            charDiv.querySelectorAll('input, select').forEach(input => {
                 input.addEventListener('input', e => {
                     const field = e.target.dataset.field;
                     const id = parseInt(charDiv.dataset.characterId);
                     const charIndex = characterData.findIndex(c => c.id === id);
                     if (charIndex !== -1) {
                         characterData[charIndex][field] = e.target.value;
-                        if (field === 'name') {
-                            charDiv.querySelector('.character-name-display').textContent = e.target.value || `Karakter ${id}`;
-                        }
                     }
                 });
             });
@@ -424,26 +448,67 @@
             return charDiv;
         }
 
-        function updateRemoveButtonsVisibility() {
-            const items = charactersContainer.children;
+        function createDialogueInput(dialogue) {
+             const dialogueDiv = document.createElement('div');
+            dialogueDiv.className = 'bg-green-100 p-4 rounded-lg mb-4 shadow-inner border border-green-200';
+            dialogueDiv.setAttribute('data-dialogue-id', dialogue.id);
+            dialogueDiv.innerHTML = `
+                 <div class="flex justify-between items-center mb-3">
+                    <input type="text" class="font-semibold text-green-800 text-lg bg-transparent border-b border-green-300 focus:outline-none" data-field="speaker" value="${dialogue.speaker}" placeholder="Pembicara (e.g., Narator)"/>
+                    <button class="p-1 text-red-600 hover:text-red-800 transition duration-200 remove-dialogue-btn" title="Hapus Dialog" data-id="${dialogue.id}">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <textarea class="w-full p-2 border-gray-300 rounded-md" rows="2" data-field="line" placeholder="Tulis dialog di sini...">${dialogue.line}</textarea>
+            `;
+            dialogueDiv.querySelectorAll('input, textarea').forEach(input => {
+                input.addEventListener('input', e => {
+                    const field = e.target.dataset.field;
+                    const id = parseInt(dialogueDiv.dataset.dialogueId);
+                    const dialogueIndex = dialogueData.findIndex(d => d.id === id);
+                    if (dialogueIndex > -1) {
+                         dialogueData[dialogueIndex][field] = e.target.value;
+                    }
+                });
+            });
+            dialogueDiv.querySelector('.remove-dialogue-btn').addEventListener('click', e => removeDialogue(parseInt(e.currentTarget.dataset.id)));
+            return dialogueDiv;
+        }
+
+        function updateRemoveButtonsVisibility(container, selector) {
+            const items = container.children;
             Array.from(items).forEach(item => {
-                const removeBtn = item.querySelector('.remove-character-btn');
+                const removeBtn = item.querySelector(selector);
                 if (removeBtn) removeBtn.classList.toggle('hidden', items.length <= 1);
             });
         }
 
         function addCharacter() {
             const newId = characterData.length > 0 ? Math.max(...characterData.map(c => c.id)) + 1 : 1;
-            const newChar = { id: newId, name: `Karakter ${newId}`, gender: '', clothing: '', action: '', characteristics: '', dialogue: '' };
+            const newChar = { id: newId, name: `Karakter ${newId}`, gender: '', clothing: '', action: '', characteristics: '' };
             characterData.push(newChar);
             charactersContainer.appendChild(createCharacterInput(newChar));
-            updateRemoveButtonsVisibility();
+            updateRemoveButtonsVisibility(charactersContainer, '.remove-character-btn');
+        }
+        
+        function addDialogue() {
+            const newId = dialogueData.length > 0 ? Math.max(...dialogueData.map(d => d.id)) + 1 : 1;
+            const newDialogue = { id: newId, speaker: 'Narator', line: '' };
+            dialogueData.push(newDialogue);
+            dialoguesContainer.appendChild(createDialogueInput(newDialogue));
+            updateRemoveButtonsVisibility(dialoguesContainer, '.remove-dialogue-btn');
         }
 
         function removeCharacter(idToRemove) {
             characterData = characterData.filter(char => char.id !== idToRemove);
             charactersContainer.querySelector(`[data-character-id="${idToRemove}"]`)?.remove();
-            updateRemoveButtonsVisibility();
+            updateRemoveButtonsVisibility(charactersContainer, '.remove-character-btn');
+        }
+
+        function removeDialogue(idToRemove) {
+            dialogueData = dialogueData.filter(d => d.id !== idToRemove);
+            dialoguesContainer.querySelector(`[data-dialogue-id="${idToRemove}"]`)?.remove();
+            updateRemoveButtonsVisibility(dialoguesContainer, '.remove-dialogue-btn');
         }
 
         async function callGeminiAPI(promptText) {
@@ -479,8 +544,10 @@
                     return `- ${details}`;
                 }).join('\n');
                 if (chars) sections.characters = `Detail Karakter:\n${chars}`;
-
-                const dialogues = characterData.filter(c => c.dialogue.trim()).map(c => `${c.name}: "${c.dialogue.trim()}"`).join('\n');
+            }
+            
+            if (dialogueToggle.checked) {
+                const dialogues = dialogueData.filter(d => d.line.trim()).map(d => `${d.speaker}: "${d.line.trim()}"`).join('\n');
                 if (dialogues) sections.dialogues = `Dialog:\n${dialogues}`;
             }
             
@@ -518,7 +585,18 @@
             indonesianPrompt.value = fullIndonesianPrompt;
 
             try {
-                const translationInstruction = `Translate and elaborate the following Indonesian video prompt into a highly detailed and cinematic English prompt. Do not add any introductory text, just provide the final English prompt. Here is the prompt to translate:\n\n"${promptForTranslation}"`;
+                 const translationInstruction = `You are an expert prompt engineer for AI video generation models like Google Veo. Convert the following Indonesian scene description into a clear, concise, and powerful English prompt.
+                RULES:
+                1. Structure: Start with the main subject and action, followed by visual details, camera work, and artistic style.
+                2. Keywords: Use vivid, descriptive keywords and short phrases, separated by commas. Avoid long conversational sentences.
+                3. Output: Only output the final English prompt, without any introduction.
+
+                EXAMPLE:
+                - Input: "Deskripsi: Seekor rubah merah berlari di padang salju saat senja. Latar: Hutan pinus musim dingin, salju tebal. Kamera: Medium shot, tracking shot."
+                - Output: "A red fox running through a snowy field, cinematic medium shot, tracking shot, golden hour lighting, winter pine forest, deep sparkling snow, photorealistic, 4K"
+                
+                Now, process this Indonesian prompt:
+                "${promptForTranslation}"`;
                 const generatedEnglish = await callGeminiAPI(translationInstruction);
                 
                 const dialogueSectionForEnglish = sections.dialogues ? `\n\n${sections.dialogues}` : '';
@@ -552,7 +630,14 @@
                 const dialogueContent = dialogueMatch ? dialogueMatch[0] : '';
                 const promptForTranslation = currentIndo.replace(dialogueContent, '').trim();
 
-                const translationInstruction = `Translate and elaborate this into a cinematic English prompt:\n\n"${promptForTranslation}"`;
+                const translationInstruction = `You are an expert prompt engineer for AI video generation models like Google Veo. Convert the following Indonesian scene description into a clear, concise, and powerful English prompt.
+                RULES:
+                1. Structure: Start with the main subject and action, followed by visual details, camera work, and artistic style.
+                2. Keywords: Use vivid, descriptive keywords and short phrases, separated by commas. Avoid long conversational sentences.
+                3. Output: Only output the final English prompt, without any introduction.
+                
+                Now, process this Indonesian prompt:
+                "${promptForTranslation}"`;
                 const generatedEnglish = await callGeminiAPI(translationInstruction);
 
                 const dialogueSection = dialogueContent ? `\n\n${dialogueContent}` : '';
@@ -598,9 +683,16 @@
                 characterSectionContent.classList.toggle('hidden', !characterToggle.checked);
             });
 
+            dialogueToggle.addEventListener('change', () => {
+                dialogueSectionContent.classList.toggle('hidden', !dialogueToggle.checked);
+            });
+
             addCharacter(); // Start with one character
+            addDialogue(); // Start with one dialogue line
             
             addCharacterBtn.addEventListener('click', addCharacter);
+            addDialogueBtn.addEventListener('click', addDialogue);
+
             generatePromptBtn.addEventListener('click', generateMasterPrompt);
             regenerateEnPromptBtn.addEventListener('click', regenerateEnglish);
             generateSuggestionBtn.addEventListener('click', getSuggestions);
